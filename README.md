@@ -23,3 +23,8 @@ Trabalho prático final de Linguagem de Programação Orientada a Objetos do cur
 
 Desenvolvimento do sistema bancário do **`Banco TADS-UFPR`**
 
+## Diagrama de classes
+
+![image](https://github.com/Salgado2004/Trabalho-Final-LPOO-UFPR/assets/53799801/d193e03d-c800-4f5f-86d2-57d09d772eac)
+
+
