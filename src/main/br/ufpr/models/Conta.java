@@ -4,17 +4,15 @@ public abstract class Conta implements ContaI {
     protected int numero;
     protected Cliente dono;
     protected double saldo;
-    protected double limite;
 
-    public Conta(int numero, Cliente dono, double saldo, double limite) {
+    public Conta(int numero, Cliente dono, double saldo) {
         this.numero = numero;
         this.dono = dono;
         this.saldo = saldo;
-        this.limite = limite;
     }
 
 
-    public boolean depositar(double valor) {
+    public boolean deposita(double valor) {
         if (valor > 0) {
             this.saldo += valor;
             return true;
@@ -22,8 +20,8 @@ public abstract class Conta implements ContaI {
         return false;
     }
 
-    public boolean sacar(double valor) {
-        if (valor > 0 && valor <= this.saldo + this.limite) {
+    public boolean saca(double valor) {
+        if (valor > 0 && valor <= this.saldo) {
             this.saldo -= valor;
             return true;
         }
