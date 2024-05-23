@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
-public class testeEndereco {
+public class TesteEndereco {
     @Test
     public void EnderecoValido() {
         Endereco endereco = new Endereco("Rua A", "Centro", "123", "Cidade A");
