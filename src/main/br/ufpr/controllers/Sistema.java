@@ -65,6 +65,9 @@ public class Sistema {
         Home home = new Home();
         navegacao.push(home);
         Dimension dimension = new Dimension(650,450);
+        ImageIcon icon = new ImageIcon("assets/icon.png");
+        Image image = icon.getImage();
+        frame.setIconImage(image);
         frame.setMinimumSize(dimension);
         frame.setBounds(100, 100, 650,450);
         frame.setLocationRelativeTo(null);
