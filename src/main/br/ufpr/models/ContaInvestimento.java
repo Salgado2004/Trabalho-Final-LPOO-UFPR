@@ -1,3 +1,4 @@
+
 package main.br.ufpr.models;
 /* Criar uma classe ContaInvestimento
 
@@ -51,4 +52,5 @@ public class ContaInvestimento extends Conta{
     public void remunera() {
         this.saldo += this.saldo * 0.02;
     }
+
 }
