@@ -2,7 +2,7 @@ package main.br.ufpr.models;
 
 public class ContaCorrente extends Conta {
 
-    protected double limite;
+    private double limite;
 
     public ContaCorrente(int numero, Cliente dono, double saldo, double limite){
         super(numero, dono, saldo);
@@ -24,6 +24,6 @@ public class ContaCorrente extends Conta {
     }
 
     public void remunera(){
-        this.saldo = this.saldo * 0.01;
+        this.saldo += this.saldo * 0.01;
     }
 }
