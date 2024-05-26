@@ -1,0 +1,5 @@
+Implementation-Title: Sistema_Banco_TADS_UFPR
+Implementation-Version: 1.0
+Implementation-Vendor: br.ufpr
+Main-Class: main.br.ufpr.controllers.Sistema
+Class-Path: assets/
