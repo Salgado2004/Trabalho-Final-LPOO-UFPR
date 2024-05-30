@@ -62,9 +62,9 @@ public class ManipularConta implements Tela {
                 saldo.setVisible(mostrarSaldo.isSelected());
             }
         });
-        buscarButton.addMouseListener(new MouseAdapter() {
+        buscarButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if(!cpfCliente.getText().isEmpty()) {
                     String cpf = cpfCliente.getText();
                     conta = pesquisaContaPorCliente(cpf);
@@ -75,9 +75,9 @@ public class ManipularConta implements Tela {
                 }
             }
         });
-        saqueButton.addMouseListener(new MouseAdapter() {
+        saqueButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 try{
                     double valor = Double.parseDouble(valorSaque.getText());
                     if(conta.saca(valor)){
@@ -92,10 +92,9 @@ public class ManipularConta implements Tela {
                 }
             }
         });
-
-        depositoButton.addMouseListener(new MouseAdapter() {
+        depositoButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 try{
                     double valor = Double.parseDouble(valorDeposito.getText());
                     if(conta.deposita(valor)) {
@@ -109,10 +108,9 @@ public class ManipularConta implements Tela {
                 }
             }
         });
-
-        investirButton.addMouseListener(new MouseAdapter() {
+        investirButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 conta.remunera();
                 Mensagens.sucesso(dadosConta, "Investimento realizado com sucesso");
                 loadConta();
