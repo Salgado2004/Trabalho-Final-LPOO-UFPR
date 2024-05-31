@@ -12,7 +12,9 @@ public class ContaCorrente extends Conta {
     public void setLimite(double limite) {
         this.limite = limite;
     }
-
+    public double getLimite() {
+        return this.limite;
+    }
 
     @Override
     public boolean saca(double valor){
