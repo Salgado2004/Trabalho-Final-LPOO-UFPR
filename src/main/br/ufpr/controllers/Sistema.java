@@ -1,7 +1,5 @@
 package main.br.ufpr.controllers;
-import main.br.ufpr.models.Cliente;
-import main.br.ufpr.models.Conta;
-import main.br.ufpr.models.Tela;
+import main.br.ufpr.models.*;
 import main.br.ufpr.views.Home;
 
 import javax.swing.*;
@@ -64,7 +62,7 @@ public class Sistema {
     public static void main(String[] args){
         Home home = new Home();
         navegacao.push(home);
-        Dimension dimension = new Dimension(650,450);
+        Dimension dimension = new Dimension(700,500);
         ImageIcon icon = new ImageIcon("assets/icon.png");
         Image image = icon.getImage();
         frame.setIconImage(image);
@@ -74,6 +72,17 @@ public class Sistema {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         navigate();
         frame.setVisible(true);
+
+
+
+        Endereco endereco = new Endereco("Rua", "Bairro", "1", "Cidade");
+        Cliente cliente = new Cliente("João", "Silva", endereco, "095.218.850-33", "12345678900");
+        Cliente cliente1 = new Cliente("Maria", "Silva", endereco, "302.595.890-12", "12345678901");
+        Conta conta = new ContaCorrente(12345, cliente, 1000.0, 0.0);
+        Sistema.cadastrarCliente(cliente);
+        Sistema.cadastrarCliente(cliente1);
+        cliente.setConta(conta);
+
     }
 
 }
