@@ -16,7 +16,7 @@ public class ContaCorrente extends Conta {
 
     @Override
     public boolean saca(double valor){
-        if (valor > 0 && valor <= this.saldo && valor <= this.limite) {
+        if (valor > 0 && valor <= this.saldo + this.limite) {
             this.saldo -= valor;
             return true;
         }
