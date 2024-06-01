@@ -62,7 +62,7 @@ public class Sistema {
     public static void main(String[] args){
         Home home = new Home();
         navegacao.push(home);
-        Dimension dimension = new Dimension(650,450);
+        Dimension dimension = new Dimension(700,500);
         ImageIcon icon = new ImageIcon("assets/icon.png");
         Image image = icon.getImage();
         frame.setIconImage(image);
@@ -72,6 +72,18 @@ public class Sistema {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         navigate();
         frame.setVisible(true);
+
+        Endereco endereco1 = new Endereco("Rua A", "Prado Velho", "250", "Curitiba");
+        Cliente c1 = new Cliente("Pedro", "Souza", endereco1, "09124024902", "129711280");
+        cadastrarCliente(c1);
+
+        Endereco endereco2 = new Endereco("Rua B", "Cajuru", "1134", "Curitiba");
+        Cliente c2 = new Cliente("Alisson", "Santos", endereco2, "11754317960", "119264210");
+        cadastrarCliente(c2);
+
+        Endereco endereco3 = new Endereco("Rua C", "Jardim Amélia", "65", "Pinhais");
+        Cliente c3 = new Cliente("Leonardo", "Salgado", endereco3, "10619416980", "129321481");
+        cadastrarCliente(c3);
     }
 
 }
