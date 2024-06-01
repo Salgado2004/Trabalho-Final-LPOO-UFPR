@@ -1,5 +1,6 @@
 package main.br.ufpr.views;
 
+import main.br.ufpr.controllers.Mensagens;
 import main.br.ufpr.controllers.Sistema;
 import main.br.ufpr.models.Cliente;
 import main.br.ufpr.models.Endereco;
@@ -60,21 +61,21 @@ public class ManterCliente implements Tela {
                 cpf = cpf.replaceAll("[^0-9]", "");
 
                 if (isInteger(numero)) {
-                    JOptionPane.showMessageDialog(null, "Número Inválido.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "Número Inválido\n");
                     return;
                 }
 
                 if (cpf.equals("")) {
-                    JOptionPane.showMessageDialog(null, "CPF não pode ser vazio.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "Campo CPF não pode estar vazio\n");
                     return;
                 }
                 if (isCpfExistente(cpf)) {
-                    JOptionPane.showMessageDialog(null, "CPF já cadastrado.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "CPF já cadastrado\n");
                     return;
                 }
 
                 if (!validaCpf(cpf)) {
-                    JOptionPane.showMessageDialog(null, "CPF inválido.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "CPF inválido\n");
                     return;
                 }
 
@@ -106,12 +107,12 @@ public class ManterCliente implements Tela {
                 cpf = cpf.replaceAll("[^0-9]", "");
 
                 if (cpf.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Insira um CPF para buscar.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.aviso(null, "Insira um CPF para buscar\n");
                     return;
                 }
 
                 if (!isCpfExistente(cpf)) {
-                    JOptionPane.showMessageDialog(null, "CPF não cadastrado.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "CPF não cadastrado\n");
                     return;
                 }
 
@@ -155,17 +156,17 @@ public class ManterCliente implements Tela {
                 areTextFieldsFilled(textFieldRG, "RG");
 
                 if (isInteger(numero)) {
-                    JOptionPane.showMessageDialog(null, "Número Inválido.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "Número Inválido\n");
                     return;
                 }
 
                 if (cpf.equals("")) {
-                    JOptionPane.showMessageDialog(null, "CPF não pode ser vazio.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.aviso(null, "CPF não pode ser vazio\n");
                     return;
                 }
 
                 if (!validaCpf(cpf)) {
-                    JOptionPane.showMessageDialog(null, "CPF inválido.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                    Mensagens.erro(null, "CPF Inválido\n");
                     return;
                 }
 
@@ -179,7 +180,7 @@ public class ManterCliente implements Tela {
                     }
                 }
 
-                JOptionPane.showMessageDialog(null, "Informações Editadas.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                Mensagens.sucesso(null, "Informações editadas\n");
 
                 textFieldNome.setText("");
                 textFieldSobrenome.setText("");
@@ -200,7 +201,7 @@ public class ManterCliente implements Tela {
                 String cpf = textFieldCPF.getText();
                 Sistema.getClientes().removeIf(cliente -> cliente.getCpf().equalsIgnoreCase(cpf));
 
-                JOptionPane.showMessageDialog(null, "CPF " + cpf + " removido.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+                Mensagens.sucesso(null, "CPF "+cpf+" removido\n");
 
                 textFieldNome.setText("");
                 textFieldSobrenome.setText("");
@@ -239,7 +240,7 @@ public class ManterCliente implements Tela {
 
     public static boolean areTextFieldsFilled(JTextField textField, String campo) {
         if (textField.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Campo " + campo + " está vazio.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
+            Mensagens.aviso(null, "Campo "+campo+" está vazio\n");
             return false;
         }
         return true;
