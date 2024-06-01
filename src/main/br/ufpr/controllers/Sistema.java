@@ -62,7 +62,7 @@ public class Sistema {
     public static void main(String[] args){
         Home home = new Home();
         navegacao.push(home);
-        Dimension dimension = new Dimension(700,500);
+        Dimension dimension = new Dimension(650,450);
         ImageIcon icon = new ImageIcon("assets/icon.png");
         Image image = icon.getImage();
         frame.setIconImage(image);
