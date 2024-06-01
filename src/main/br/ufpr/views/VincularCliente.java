@@ -1,5 +1,6 @@
 package main.br.ufpr.views;
 
+import main.br.ufpr.controllers.Mensagens;
 import main.br.ufpr.controllers.Sistema;
 import main.br.ufpr.models.Cliente;
 import main.br.ufpr.models.ContaCorrente;
@@ -7,7 +8,8 @@ import main.br.ufpr.models.ContaInvestimento;
 import main.br.ufpr.models.Tela;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class VincularCliente implements Tela {
@@ -23,15 +25,21 @@ public class VincularCliente implements Tela {
     private JLabel label3;
     private JTable tabela;
     private JPanel formulario;
+    private JButton gerenciarContaButton;
+    private JButton excluirButton;
     private VincularTableModel tabelaModel = new VincularTableModel(Sistema.getClientes());
     private Cliente clienteSelecionado;
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
 
     public VincularCliente() {
+        ImageIcon delete = new ImageIcon("assets/delete.png");
+        ImageIcon gerenciar = new ImageIcon("assets/deposito.png");
+        excluirButton.setIcon(delete);
+        gerenciarContaButton.setIcon(gerenciar);
 
         tabela.setModel(tabelaModel);
-        tabela.setAutoCreateColumnsFromModel(true);
+        tabela.setColumnModel(tabela.getColumnModel());
 
 
         voltarButton.addActionListener(new ActionListener() {
@@ -64,7 +72,41 @@ public class VincularCliente implements Tela {
                         formulario.setVisible(false);
                         break;
                 }
+            }
+        });
 
+        tabela.getSelectionModel().addListSelectionListener(e -> {
+            if (tabela.getSelectedRow() != -1) {
+                clienteSelecionado = Sistema.getClientes().get(tabela.getSelectedRow());
+                tipoConta.setEnabled(false);
+                excluirButton.setVisible(true);
+                gerenciarContaButton.setVisible(true);
+                salvarButton.setVisible(false);
+                switch (clienteSelecionado.getConta() != null? clienteSelecionado.getConta().getClass().getSimpleName() : "") {
+                    case "ContaCorrente":
+                        tipoConta.setSelectedItem("Conta Corrente");
+                        corrente = (ContaCorrente) clienteSelecionado.getConta();
+                        textField1.setText(String.valueOf(corrente.getDepositoInicial()));
+                        textField2.setText(String.valueOf(corrente.getLimite()));
+                        break;
+                    case "ContaInvestimento":
+                        tipoConta.setSelectedItem("Conta Investimento");
+                        investimento = (ContaInvestimento) clienteSelecionado.getConta();
+                        textField1.setText(String.valueOf(investimento.getDepositoInicial()));
+                        textField2.setText(String.valueOf(investimento.getMontanteMinimo()));
+                        textField3.setText(String.valueOf(investimento.getDepositoMinimo()));
+                        break;
+                    default:
+                        tipoConta.setSelectedItem("");
+                        textField1.setText("");
+                        textField2.setText("");
+                        textField3.setText("");
+                        excluirButton.setVisible(false);
+                        gerenciarContaButton.setVisible(false);
+                        salvarButton.setVisible(true);
+                        tipoConta.setEnabled(true);
+                        break;
+                }
             }
         });
 
@@ -72,53 +114,84 @@ public class VincularCliente implements Tela {
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (tabela.getSelectedRow() == -1) {
-                    JOptionPane.showMessageDialog(frame, "Selecione um cliente para vincular");
-                    return;
-                }
-                switch (Objects.requireNonNull(tipoConta.getSelectedItem()).toString()) {
+                switch (tipoConta.getSelectedItem().toString()) {
+
                     case "Conta Corrente":
-                        corrente = new ContaCorrente(
-                                1,
-                                Sistema.getClientes().get(tabela.getSelectedRow()),
-                                Double.parseDouble(textField1.getText()),
-                                Double.parseDouble(textField2.getText())
-                        );
-                        Sistema.cadastrarConta(corrente);
-                        clienteSelecionado.setConta(corrente);
+                        if(verificaCampo(textField1) && verificaCampo(textField2)) {
+                            corrente = new ContaCorrente(
+                                    Sistema.getClientes().get(tabela.getSelectedRow()),
+                                    Double.parseDouble(textField1.getText()),
+                                    Double.parseDouble(textField2.getText())
+                            );
+                            Sistema.cadastrarConta(corrente);
+                            clienteSelecionado.setConta(corrente);
+                            Mensagens.sucesso(frame, "Conta cadastrada com sucesso!");
+                            formulario.setVisible(false);
+                            tipoConta.setEnabled(false);
+                        }
                         break;
                     case "Conta Investimento":
-                        investimento = new ContaInvestimento(
-                                1,
-                                Sistema.getClientes().get(tabela.getSelectedRow()),
-                                Double.parseDouble(textField1.getText()),
-                                Double.parseDouble(textField2.getText()),
-                                Double.parseDouble(textField3.getText())
-                        );
-                        Sistema.cadastrarConta(investimento);
-                        clienteSelecionado.setConta(investimento);
+                        if(verificaCampo(textField1) && verificaCampo(textField2) && verificaCampo(textField3)) {
+                            investimento = new ContaInvestimento(
+                                    Sistema.getClientes().get(tabela.getSelectedRow()),
+                                    Double.parseDouble(textField1.getText()),
+                                    Double.parseDouble(textField3.getText()),
+                                    Double.parseDouble(textField2.getText())
+                            );
+                            Sistema.cadastrarConta(investimento);
+                            clienteSelecionado.setConta(investimento);
+                            Mensagens.sucesso(frame, "Conta cadastrada com sucesso!");
+                            formulario.setVisible(false);
+                            tipoConta.setEnabled(false);
+                        }
                         break;
                 }
-                JOptionPane.showMessageDialog(frame, "Conta cadastrada com sucesso");
+                tabelaModel.fireTableDataChanged();
+                corrente = null;
+                investimento = null;
             }
         });
 
-
-
-        tabela.addFocusListener(new FocusAdapter() {
+        gerenciarContaButton.addActionListener(new ActionListener() {
             @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                clienteSelecionado = Sistema.getClientes().get(tabela.getSelectedRow());
-                if (clienteSelecionado.getConta() != null) {
-                    tipoConta.setSelectedIndex(1);
-                    textField1.setText(clienteSelecionado.getConta().getClass().getSimpleName());
-                }
+            public void actionPerformed(ActionEvent e) {
+                Sistema.navigate(new ManipularConta(clienteSelecionado));
+            }
+        });
+
+        excluirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(!Mensagens.confirmar(frame, "Tem certeza que deseja excluir a conta?")) return;
+                Sistema.getContas().remove(clienteSelecionado.getConta());
+                clienteSelecionado.setConta(null);
+                tabelaModel.fireTableDataChanged();
+                JOptionPane.showMessageDialog(frame, "Conta excluída com sucesso");
+                tipoConta.setSelectedIndex(0);
+
             }
         });
     }
 
+
+
     public JPanel getFrame() {
         return frame;
+    }
+
+    private boolean verificaCampo(JTextField textField){
+        if (!textField.getText().isEmpty()){
+            try {
+                Double.parseDouble(textField.getText());
+                return true;
+            } catch (NumberFormatException e){
+                Mensagens.aviso(frame, "Preencha os campos corretamente");
+                return false;
+            }
+        } else {
+            Mensagens.aviso(frame, "Preencha todos os campos");
+            return false;
+        }
     }
 }
