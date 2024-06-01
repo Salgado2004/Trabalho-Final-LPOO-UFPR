@@ -57,6 +57,8 @@ public class ManterCliente implements Tela {
                 areTextFieldsFilled(textFieldCPF, "CPF");
                 areTextFieldsFilled(textFieldRG, "RG");
 
+                cpf = cpf.replaceAll("[^0-9]", "");
+
                 if (isInteger(numero)) {
                     JOptionPane.showMessageDialog(null, "Número Inválido.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
                     return;
@@ -98,7 +100,10 @@ public class ManterCliente implements Tela {
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 String cpf = textFieldCPF.getText();
+
+                cpf = cpf.replaceAll("[^0-9]", "");
 
                 if (cpf.equals("")) {
                     JOptionPane.showMessageDialog(null, "Insira um CPF para buscar.\n", "Informação", JOptionPane.INFORMATION_MESSAGE);
@@ -243,6 +248,8 @@ public class ManterCliente implements Tela {
     public static boolean validaCpf(String cpf) {
         int soma = 0, resto = 0;
 
+        cpf = cpf.replaceAll("[^0-9]", "");
+
         if (cpf.matches("[0-9]{11}") && !cpf.matches("^(\\d)\\1{10}")) {
             for (int i = 0; i < 9; i++) {
                 soma += Integer.parseInt(cpf.substring(i, i + 1)) * (10 - i);
@@ -276,7 +283,4 @@ public class ManterCliente implements Tela {
         return frame;
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }

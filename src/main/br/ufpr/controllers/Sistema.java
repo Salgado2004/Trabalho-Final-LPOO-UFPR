@@ -80,7 +80,7 @@ public class Sistema {
         Cliente c1 = new Cliente("Pedro", "Souza", endereco1, "09124024902", "129711280");
         cadastrarCliente(c1);
 
-        Endereco endereco2 = new Endereco("Rua B", "Centro", "1134", "Curitiba");
+        Endereco endereco2 = new Endereco("Rua B", "Cajuru", "1134", "Curitiba");
         Cliente c2 = new Cliente("Alisson", "Santos", endereco2, "11754317960", "119264210");
         cadastrarCliente(c2);
 
