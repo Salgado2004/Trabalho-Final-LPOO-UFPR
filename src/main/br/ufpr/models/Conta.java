@@ -1,12 +1,19 @@
 package main.br.ufpr.models;
 
 public abstract class Conta implements ContaI {
+    private static int contador = 0;
     protected int numero;
     protected Cliente dono;
     protected double saldo;
 
     public Conta(int numero, Cliente dono, double saldo) {
         this.numero = numero;
+        this.dono = dono;
+        this.saldo = saldo;
+    }
+
+    public Conta(Cliente dono, double saldo) {
+        this.numero = ++contador;
         this.dono = dono;
         this.saldo = saldo;
     }

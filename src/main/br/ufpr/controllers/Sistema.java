@@ -1,8 +1,5 @@
 package main.br.ufpr.controllers;
-import main.br.ufpr.models.Cliente;
-import main.br.ufpr.models.Conta;
-import main.br.ufpr.models.Endereco;
-import main.br.ufpr.models.Tela;
+import main.br.ufpr.models.*;
 import main.br.ufpr.views.Home;
 
 import javax.swing.*;

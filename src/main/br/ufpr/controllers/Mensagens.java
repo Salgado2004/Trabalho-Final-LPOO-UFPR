@@ -24,4 +24,8 @@ public class Mensagens {
     public static void carregando(Component origin, String mensagem){
         JOptionPane.showMessageDialog(origin, mensagem, "Carregando", JOptionPane.INFORMATION_MESSAGE, loadingIcon);
     }
+
+    public static boolean confirmar(Component origin, String mensagem){
+        return JOptionPane.showConfirmDialog(origin, mensagem, "Confirmação", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
 }
