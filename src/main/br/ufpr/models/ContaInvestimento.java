@@ -1,5 +1,5 @@
-
 package main.br.ufpr.models;
+
 /* Criar uma classe ContaInvestimento
 
  A classe deve herdar a super Conta
@@ -10,11 +10,21 @@ public boolean deposita(double valor): Recebe como parâmetro o valor a ser depo
 
 public boolean saca(double valor): Recebe como parâmetro o valor a ser sacado. Se o novo valor do saldo (considerando o saque) for maior ou igual ao montanteMinimo, o saque deve ser efetuado. Para isso invoque o método saque da classe pai (Conta) e retorne true. Caso contrário, deve-se retornar false. Mostrar mensagem na tela informando usuário.
 public void remunera(): Aplicar remuneração de 2% ao saldo da conta. */
-public class ContaInvestimento extends Conta{
-    private double depositoMinimo;
-    private double montanteMinimo;
+public class ContaInvestimento extends Conta {
+    private final double depositoInicial;
+    private final double depositoMinimo;
+    private final double montanteMinimo;
+
     public ContaInvestimento(int numero, Cliente dono, double saldo, double depositoMinimo, double montanteMinimo) {
         super(numero, dono, saldo);
+        this.depositoInicial = saldo;
+        this.depositoMinimo = depositoMinimo;
+        this.montanteMinimo = montanteMinimo;
+    }
+
+    public ContaInvestimento(Cliente dono, double saldo, double depositoMinimo, double montanteMinimo) {
+        super(dono, saldo);
+        this.depositoInicial = saldo;
         this.depositoMinimo = depositoMinimo;
         this.montanteMinimo = montanteMinimo;
     }
@@ -46,11 +56,24 @@ public class ContaInvestimento extends Conta{
             return false;
         }
     }
-    
 
     @Override
     public void remunera() {
         this.saldo += this.saldo * 0.02;
+    }
+
+    public double getDepositoMinimo() {
+        return this.depositoMinimo;
+    }
+
+    public double getMontanteMinimo() {
+        return this.montanteMinimo;
+    }
+
+
+
+    public double getDepositoInicial() {
+        return this.depositoInicial;
     }
 
 }
