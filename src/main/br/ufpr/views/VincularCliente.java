@@ -2,6 +2,7 @@ package main.br.ufpr.views;
 
 import main.br.ufpr.controllers.Mensagens;
 import main.br.ufpr.controllers.Sistema;
+import main.br.ufpr.controllers.Imagens;
 import main.br.ufpr.models.Cliente;
 import main.br.ufpr.models.ContaCorrente;
 import main.br.ufpr.models.ContaInvestimento;
@@ -33,10 +34,8 @@ public class VincularCliente implements Tela {
     private ContaInvestimento investimento;
 
     public VincularCliente() {
-        ImageIcon delete = new ImageIcon("assets/delete.png");
-        ImageIcon gerenciar = new ImageIcon("assets/deposito.png");
-        excluirButton.setIcon(delete);
-        gerenciarContaButton.setIcon(gerenciar);
+        excluirButton.setIcon(Imagens.DELETE.icon());
+        gerenciarContaButton.setIcon(Imagens.DEPOSITO.icon());
 
         tabela.setModel(tabelaModel);
         tabela.setColumnModel(tabela.getColumnModel());
