@@ -1,5 +1,6 @@
 package main.br.ufpr.views;
 
+import main.br.ufpr.controllers.Imagens;
 import main.br.ufpr.controllers.Sistema;
 import main.br.ufpr.models.Tela;
 
@@ -12,8 +13,14 @@ public class Home implements Tela {
     private JButton clientesButton;
     private JButton contasButton;
     private JButton transactionsButton;
+    private JLabel logo;
 
     public Home() {
+        logo.setIcon(Imagens.LOGO.icon(300, 300));
+        contasButton.setIcon(Imagens.CONTAS.icon());
+        clientesButton.setIcon(Imagens.CLIENTES.icon());
+        transactionsButton.setIcon(Imagens.TRANSACTIONS.icon());
+
         clientesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
