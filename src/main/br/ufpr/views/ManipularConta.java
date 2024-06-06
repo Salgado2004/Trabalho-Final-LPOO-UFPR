@@ -11,6 +11,11 @@ import main.br.ufpr.models.Tela;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * Classe que representa a tela de manipulação de conta
+ * Realiza transações como saque, depósito e investimento
+ * @see Tela
+ */
 public class ManipularConta implements Tela {
     private Conta conta;
     private JPanel frame;
@@ -33,7 +38,13 @@ public class ManipularConta implements Tela {
     private JLabel tipoConta;
     private JLabel rendimento;
     private JLabel numeroConta;
+    private JLabel warningLimite;
 
+    /**
+     * Construtor da classe ManipularConta
+     * Adiciona os ícones aos botões e painéis
+     * Adiciona os listeners aos botões
+     */
     public ManipularConta() {
         buscarButton.setIcon(Imagens.SEARCH.icon());
         mostrarSaldo.setIcon(Imagens.EYE_OPEN.icon());
@@ -104,13 +115,22 @@ public class ManipularConta implements Tela {
         investirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                conta.remunera();
-                Mensagens.sucesso(dadosConta, "Investimento realizado com sucesso");
-                loadConta();
+                if(conta.getSaldo() > 0){
+                    conta.remunera();
+                    Mensagens.sucesso(dadosConta, "Investimento realizado com sucesso");
+                    loadConta();
+                } else {
+                    Mensagens.aviso(dadosConta, "Saldo insuficiente para investir");
+                }
             }
         });
     }
 
+    /**
+     * Construtor da classe ManipularConta
+     * Serve para instanciar a classe e carregar os dados da conta de um cliente
+     * @param cliente Cliente que será manipulado
+     */
     public ManipularConta(Cliente cliente){
         this();
         conta = cliente.getConta();
@@ -139,6 +159,7 @@ public class ManipularConta implements Tela {
         Mensagens.carregando(dadosConta, "Carregando dados da conta...");
         saldo.setText("R$ " + String.format("%.2f", conta.getSaldo()).replace(".", ",") );
         numeroConta.setText("Conta Nº: "+ String.format("%6d", conta.getNumero()));
+        warningLimite.setVisible(conta.getSaldo() < 0);
         if(conta.getClass() == ContaCorrente.class){
             tipoConta.setText("Sua conta é do tipo: Conta Corrente");
             rendimento.setText("Seu rendimento é de: 101%");
@@ -148,6 +169,11 @@ public class ManipularConta implements Tela {
         }
     }
 
+    /**
+     * Retorna o painel principal da tela
+     * @return JPanel
+     * @see Tela
+     */
     public JPanel getFrame() {
         return frame;
     }
