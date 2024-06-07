@@ -3,28 +3,55 @@ package main.br.ufpr.controllers;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classe que contém métodos para exibir mensagens de erro, aviso, sucesso e confirmação
+ * Utiliza a classe JOptionPane para exibir as mensagens
+ * @see JOptionPane
+ */
 public class Mensagens {
-    private static final ImageIcon erroIcon = new ImageIcon("assets/error.png");
-    private static final ImageIcon warningIcon = new ImageIcon("assets/warning.png");
-    private static final ImageIcon successIcon = new ImageIcon("assets/sucess.png");
-    private static final ImageIcon loadingIcon = new ImageIcon("assets/load.png");
 
+    /**
+     * Exibe uma mensagem de erro
+     * @param origin O componente que originou a mensagem
+     * @param mensagem A mensagem a ser exibida
+     */
     public static void erro(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Erro", JOptionPane.ERROR_MESSAGE, erroIcon);
+        JOptionPane.showMessageDialog(origin, mensagem, "Erro", JOptionPane.ERROR_MESSAGE, Imagens.ERRO.icon());
     }
 
+    /**
+     * Exibe uma mensagem de aviso
+     * @param origin O componente que originou a mensagem
+     * @param mensagem A mensagem a ser exibida
+     */
     public static void aviso(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Aviso", JOptionPane.WARNING_MESSAGE, warningIcon);
+        JOptionPane.showMessageDialog(origin, mensagem, "Aviso", JOptionPane.WARNING_MESSAGE, Imagens.WARNING.icon());
     }
 
+    /**
+     * Exibe uma mensagem de sucesso
+     * @param origin O componente que originou a mensagem
+     * @param mensagem A mensagem a ser exibida
+     */
     public static void sucesso(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Sucesso", JOptionPane.INFORMATION_MESSAGE, successIcon);
+        JOptionPane.showMessageDialog(origin, mensagem, "Sucesso", JOptionPane.INFORMATION_MESSAGE, Imagens.SUCCESS.icon());
     }
 
+    /**
+     * Exibe uma mensagem de carregamento
+     * @param origin O componente que originou a mensagem
+     * @param mensagem A mensagem a ser exibida
+     */
     public static void carregando(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Carregando", JOptionPane.INFORMATION_MESSAGE, loadingIcon);
+        JOptionPane.showMessageDialog(origin, mensagem, "Carregando", JOptionPane.INFORMATION_MESSAGE, Imagens.LOADING.icon());
     }
 
+    /**
+     * Exibe uma mensagem de confirmação
+     * @param origin O componente que originou a mensagem
+     * @param mensagem A mensagem a ser exibida
+     * @return true se o usuário confirmar a ação, false caso contrário
+     */
     public static boolean confirmar(Component origin, String mensagem){
         return JOptionPane.showConfirmDialog(origin, mensagem, "Confirmação", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
