@@ -1,5 +1,6 @@
 package main.br.ufpr.views;
 
+import main.br.ufpr.controllers.Imagens;
 import main.br.ufpr.controllers.Mensagens;
 import main.br.ufpr.controllers.Sistema;
 import main.br.ufpr.models.Cliente;
@@ -34,21 +35,13 @@ public class ManipularConta implements Tela {
     private JLabel numeroConta;
 
     public ManipularConta() {
-        ImageIcon eye_open = new ImageIcon("assets/eye_open.png");
-        ImageIcon eye_closed = new ImageIcon("assets/eye_closed.png");
-        ImageIcon search = new ImageIcon("assets/search.png");
-        ImageIcon deposito = new ImageIcon("assets/deposito.png");
-        ImageIcon saque = new ImageIcon("assets/saque.png");
-        ImageIcon remunera = new ImageIcon("assets/remunera.png");
-        ImageIcon investimento = new ImageIcon("assets/investir.png");
-
-        buscarButton.setIcon(search);
-        mostrarSaldo.setIcon(eye_open);
-        mostrarSaldo.setSelectedIcon(eye_closed);
-        tabbedPane1.setIconAt(0, saque);
-        tabbedPane1.setIconAt(1, deposito);
-        tabbedPane1.setIconAt(2, remunera);
-        investirButton.setIcon(investimento);
+        buscarButton.setIcon(Imagens.SEARCH.icon());
+        mostrarSaldo.setIcon(Imagens.EYE_OPEN.icon());
+        mostrarSaldo.setSelectedIcon(Imagens.EYE_CLOSED.icon());
+        tabbedPane1.setIconAt(0, Imagens.SAQUE.icon());
+        tabbedPane1.setIconAt(1, Imagens.DEPOSITO.icon());
+        tabbedPane1.setIconAt(2, Imagens.REMUNERA.icon());
+        investirButton.setIcon(Imagens.INVESTIMENTO.icon());
 
         voltarButton.addActionListener(new ActionListener() {
             @Override

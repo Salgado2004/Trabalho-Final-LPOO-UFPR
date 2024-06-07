@@ -45,26 +45,55 @@ public class Sistema {
         navigate();
     }
 
+    /**
+     * Método que cadastra um cliente na lista de clientes
+     * @param cliente
+     */
     public static void cadastrarCliente(Cliente cliente){
         clientes.add(cliente);
     }
+
+    /**
+     * Método que cadastra uma conta na lista de contas
+     * @param conta
+     */
     public static void cadastrarConta(Conta conta){
         contas.add(conta);
     }
 
+    /**
+     * Método que retorna a lista de clientes
+     * @return List<Cliente>
+     */
     public static List<Cliente> getClientes(){
         return clientes;
     }
+
+    /**
+     * Método que retorna a lista de contas
+     * @return List<Conta>
+     */
     public static List<Conta> getContas(){
         return contas;
     }
 
+    /**
+     * Método main que inicializa a aplicação
+     *
+     * Cria uma instância da classe Home e a adiciona na pilha de navegação
+     * Define o ícone da aplicação como a imagem MAIN
+     * Define o tamanho mínimo da janela como 700x500
+     * Define a posição da janela como centralizada
+     * Define a operação padrão de fechamento da janela como EXIT_ON_CLOSE
+     * Chama o método navigate()
+     * Define a janela como visível
+     * Inicializa 3 clientes e os cadastra
+     */
     public static void main(String[] args){
         Home home = new Home();
         navegacao.push(home);
         Dimension dimension = new Dimension(700,500);
-        ImageIcon icon = new ImageIcon("assets/icon.png");
-        Image image = icon.getImage();
+        Image image = Imagens.MAIN.image();
         frame.setIconImage(image);
         frame.setMinimumSize(dimension);
         frame.setBounds(100, 100, 650,450);
