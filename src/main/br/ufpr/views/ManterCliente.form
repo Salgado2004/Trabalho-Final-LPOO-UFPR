@@ -37,7 +37,7 @@
           </grid>
         </constraints>
         <properties>
-          <foreground color="-1967873"/>
+          <foreground color="-16777216"/>
         </properties>
       </component>
       <component id="ea721" class="javax.swing.JTextField" binding="textFieldSobrenome">
@@ -47,7 +47,7 @@
           </grid>
         </constraints>
         <properties>
-          <foreground color="-1967873"/>
+          <foreground color="-16777216"/>
         </properties>
       </component>
       <grid id="77e6a" layout-manager="GridLayoutManager" row-count="2" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -80,7 +80,7 @@
               </grid>
             </constraints>
             <properties>
-              <foreground color="-1967873"/>
+              <foreground color="-16777216"/>
             </properties>
           </component>
           <component id="87cd1" class="javax.swing.JLabel">
@@ -110,7 +110,7 @@
               </grid>
             </constraints>
             <properties>
-              <foreground color="-1967873"/>
+              <foreground color="-16777216"/>
             </properties>
           </component>
           <component id="ab485" class="javax.swing.JLabel">
@@ -129,7 +129,7 @@
               </grid>
             </constraints>
             <properties>
-              <foreground color="-1967873"/>
+              <foreground color="-16777216"/>
             </properties>
           </component>
           <component id="18ee" class="javax.swing.JTextField" binding="textFieldNumero">
@@ -139,7 +139,7 @@
               </grid>
             </constraints>
             <properties>
-              <foreground color="-1967873"/>
+              <foreground color="-16777216"/>
             </properties>
           </component>
         </children>
@@ -160,7 +160,7 @@
           </grid>
         </constraints>
         <properties>
-          <foreground color="-1967873"/>
+          <foreground color="-16777216"/>
         </properties>
       </component>
       <component id="a516e" class="javax.swing.JLabel">
@@ -179,7 +179,7 @@
           </grid>
         </constraints>
         <properties>
-          <foreground color="-1967873"/>
+          <foreground color="-16777216"/>
         </properties>
       </component>
       <component id="c4018" class="javax.swing.JButton" binding="buscarButton" default-binding="true">
