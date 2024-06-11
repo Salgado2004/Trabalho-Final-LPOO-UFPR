@@ -199,7 +199,12 @@ public class ManterCliente implements Tela {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cpf = textFieldCPF.getText();
-                Sistema.getClientes().removeIf(cliente -> cliente.getCpf().equalsIgnoreCase(cpf));
+
+                cpf = cpf.replaceAll("[^0-9]", "");
+
+                String finalCpf = cpf;
+
+                Sistema.getClientes().removeIf(cliente -> cliente.getCpf().equalsIgnoreCase(finalCpf));
 
                 Mensagens.sucesso(null, "CPF "+cpf+" removido\n");
 
