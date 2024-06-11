@@ -1,15 +1,23 @@
-package main.br.ufpr.views;
-
-import main.br.ufpr.models.Cliente;
-
-import javax.swing.table.AbstractTableModel;
-import java.util.List;
-
+/**
+ * Classe VincularTableModel.
+ * Esta classe é um modelo de tabela personalizado para exibir uma lista de clientes em uma tabela.
+ *
+ * A classe estende AbstractTableModel e sobrescreve os seguintes métodos:
+ * - getRowCount(): retorna o número de linhas na tabela.
+ * - getColumnCount(): retorna o número de colunas na tabela.
+ * - getColumnName(int column): retorna o nome da coluna na posição especificada.
+ * - getValueAt(int rowIndex, int columnIndex): retorna o valor na célula especificada por rowIndex e columnIndex.
+ * - getColumnClass(int columnIndex): retorna a classe que representa o tipo de coluna.
+ */
 public class VincularTableModel extends AbstractTableModel {
     private final List<Cliente> clientes;
     private final String[] colunas = {"Nome", "CPF", "Tipo da Conta", "Conta"};
 
-
+    /**
+     * Construtor da classe VincularTableModel.
+     *
+     * @param clientes a lista de clientes a ser exibida na tabela
+     */
     public VincularTableModel(List<Cliente> clientes) {
         this.clientes = clientes;
     }
@@ -59,6 +67,4 @@ public class VincularTableModel extends AbstractTableModel {
             return getValueAt(0, columnIndex).getClass();
         return Object.class;
     }
-
-
 }

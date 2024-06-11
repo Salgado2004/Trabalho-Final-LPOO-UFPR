@@ -1,42 +1,40 @@
-package main.br.ufpr.views;
-
-import main.br.ufpr.controllers.Mensagens;
-import main.br.ufpr.controllers.Sistema;
-import main.br.ufpr.models.Cliente;
-import main.br.ufpr.models.Endereco;
-import main.br.ufpr.models.Tela;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class ManterCliente implements Tela {
-    private JPanel frame;
+/**
+ * Classe responsável pela manutenção dos clientes no sistema.
+ * Permite operações de inserção, busca, edição e exclusão de clientes.
+ */
+public class ManterCliente {
+    private JTable tabelaClientes;
+    private TabelaModel tabelaModel;
     private JButton voltarButton;
+    private JButton inserirButton;
+    private JButton buscarButton;
+    private JButton editarButton;
+    private JButton excluirButton;
     private JTextField textFieldNome;
     private JTextField textFieldSobrenome;
     private JTextField textFieldLogradouro;
     private JTextField textFieldBairro;
     private JTextField textFieldCidade;
+    private JTextField textFieldNumero;
     private JTextField textFieldCPF;
     private JTextField textFieldRG;
-    private JButton buscarButton;
-    private JTable tabelaClientes;
-    private JTextField textFieldNumero;
-    private JButton inserirButton;
-    private JButton editarButton;
-    private JButton excluirButton;
-    private ManterClienteTableModel tabelaModel = new ManterClienteTableModel(Sistema.getClientes());
+    private JPanel frame;
 
+    /**
+     * Construtor da classe ManterCliente.
+     * Configura a tabela de clientes e adiciona listeners aos botões de ação.
+     */
     public ManterCliente() {
         tabelaClientes.setModel(tabelaModel);
         tabelaClientes.setColumnModel(tabelaClientes.getColumnModel());
+
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Sistema.goBack();
             }
         });
+
         inserirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -97,13 +95,10 @@ public class ManterCliente implements Tela {
             }
         });
 
-
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 String cpf = textFieldCPF.getText();
-
                 cpf = cpf.replaceAll("[^0-9]", "");
 
                 if (cpf.equals("")) {
@@ -116,7 +111,6 @@ public class ManterCliente implements Tela {
                     return;
                 }
 
-
                 for (Cliente cliente : Sistema.getClientes()) {
                     if (cliente.getCpf().equalsIgnoreCase(cpf)) {
                         textFieldNome.setText(cliente.getNome());
@@ -128,14 +122,12 @@ public class ManterCliente implements Tela {
                         textFieldRG.setText(cliente.getRg());
                     }
                 }
-
             }
         });
 
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 String nome = textFieldNome.getText();
                 String sobreNome = textFieldSobrenome.getText();
                 String logradouro = textFieldLogradouro.getText();
@@ -144,7 +136,6 @@ public class ManterCliente implements Tela {
                 String numero = textFieldNumero.getText();
                 String cpf = textFieldCPF.getText();
                 String rg = textFieldRG.getText();
-
 
                 areTextFieldsFilled(textFieldNome, "nome");
                 areTextFieldsFilled(textFieldSobrenome, "sobrenome");
@@ -199,14 +190,13 @@ public class ManterCliente implements Tela {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cpf = textFieldCPF.getText();
-
                 cpf = cpf.replaceAll("[^0-9]", "");
 
                 String finalCpf = cpf;
 
                 Sistema.getClientes().removeIf(cliente -> cliente.getCpf().equalsIgnoreCase(finalCpf));
 
-                Mensagens.sucesso(null, "CPF "+cpf+" removido\n");
+                Mensagens.sucesso(null, "CPF " + cpf + " removido\n");
 
                 textFieldNome.setText("");
                 textFieldSobrenome.setText("");
@@ -222,6 +212,11 @@ public class ManterCliente implements Tela {
         });
     }
 
+    /**
+     * Verifica se o CPF já está cadastrado no sistema.
+     * @param cpf CPF a ser verificado.
+     * @return true se o CPF já estiver cadastrado, false caso contrário.
+     */
     private boolean isCpfExistente(String cpf) {
         for (Cliente cliente : Sistema.getClientes()) {
             if (cliente.getCpf().equalsIgnoreCase(cpf)) {
@@ -231,6 +226,11 @@ public class ManterCliente implements Tela {
         return false;
     }
 
+    /**
+     * Verifica se uma string é um número inteiro.
+     * @param str String a ser verificada.
+     * @return true se a string não for um número inteiro, false caso contrário.
+     */
     public static boolean isInteger(String str) {
         if (str == null) {
             return true;
@@ -243,14 +243,25 @@ public class ManterCliente implements Tela {
         return false;
     }
 
+    /**
+     * Verifica se os campos de texto estão preenchidos.
+     * @param textField Campo de texto a ser verificado.
+     * @param campo Nome do campo para exibir mensagem de aviso.
+     * @return true se o campo estiver preenchido, false caso contrário.
+     */
     public static boolean areTextFieldsFilled(JTextField textField, String campo) {
         if (textField.getText().trim().isEmpty()) {
-            Mensagens.aviso(null, "Campo "+campo+" está vazio\n");
+            Mensagens.aviso(null, "Campo " + campo + " está vazio\n");
             return false;
         }
         return true;
     }
 
+    /**
+     * Valida o CPF.
+     * @param cpf CPF a ser validado.
+     * @return true se o CPF for válido, false caso contrário.
+     */
     public static boolean validaCpf(String cpf) {
         int soma = 0, resto = 0;
 
@@ -285,8 +296,11 @@ public class ManterCliente implements Tela {
         return false;
     }
 
+    /**
+     * Retorna o painel principal da tela.
+     * @return JPanel
+     */
     public JPanel getFrame() {
         return frame;
     }
-
 }

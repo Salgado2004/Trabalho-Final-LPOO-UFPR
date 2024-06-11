@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
+/**
+ * Classe responsável por vincular clientes a contas (corrente ou investimento).
+ */
 public class VincularCliente implements Tela {
     private JPanel frame;
     private JButton voltarButton;
@@ -33,13 +36,16 @@ public class VincularCliente implements Tela {
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
 
+    /**
+     * Construtor da classe VincularCliente.
+     * Configura os componentes da interface e adiciona os listeners.
+     */
     public VincularCliente() {
         excluirButton.setIcon(Imagens.DELETE.icon());
         gerenciarContaButton.setIcon(Imagens.DEPOSITO.icon());
 
         tabela.setModel(tabelaModel);
         tabela.setColumnModel(tabela.getColumnModel());
-
 
         voltarButton.addActionListener(new ActionListener() {
             @Override
@@ -109,12 +115,10 @@ public class VincularCliente implements Tela {
             }
         });
 
-
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (tipoConta.getSelectedItem().toString()) {
-
                     case "Conta Corrente":
                         if(verificaCampo(textField1) && verificaCampo(textField2)) {
                             corrente = new ContaCorrente(
@@ -161,24 +165,29 @@ public class VincularCliente implements Tela {
         excluirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if(!Mensagens.confirmar(frame, "Tem certeza que deseja excluir a conta?")) return;
                 Sistema.getContas().remove(clienteSelecionado.getConta());
                 clienteSelecionado.setConta(null);
                 tabelaModel.fireTableDataChanged();
                 JOptionPane.showMessageDialog(frame, "Conta excluída com sucesso");
                 tipoConta.setSelectedIndex(0);
-
             }
         });
     }
 
-
-
+    /**
+     * Retorna o painel principal da tela.
+     * @return JPanel
+     */
     public JPanel getFrame() {
         return frame;
     }
 
+    /**
+     * Verifica se um campo de texto está preenchido e contém um valor numérico válido.
+     * @param textField Campo de texto a ser verificado.
+     * @return true se o campo estiver preenchido corretamente, false caso contrário.
+     */
     private boolean verificaCampo(JTextField textField){
         if (!textField.getText().isEmpty()){
             try {
