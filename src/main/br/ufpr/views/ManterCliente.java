@@ -9,7 +9,10 @@ import main.br.ufpr.models.Tela;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Esta classe representa a tela de manutenção do cliente.
+ * Ela implementa a interface Tela e define os campos de entrada e botões para inserir, editar, excluir e buscar clientes.
+ */
 public class ManterCliente implements Tela {
     private JPanel frame;
     private JButton voltarButton;
@@ -28,6 +31,11 @@ public class ManterCliente implements Tela {
     private JButton excluirButton;
     private ManterClienteTableModel tabelaModel = new ManterClienteTableModel(Sistema.getClientes());
 
+
+    /**
+     * Construtor para a classe ManterCliente.
+     * Define os valores iniciais para as variáveis de instância e adiciona os ouvintes de ação aos botões.
+     */
     public ManterCliente() {
         tabelaClientes.setModel(tabelaModel);
         tabelaClientes.setColumnModel(tabelaClientes.getColumnModel());
@@ -221,7 +229,12 @@ public class ManterCliente implements Tela {
             }
         });
     }
-
+    /**
+     * Verifica se um CPF já existe na lista de clientes.
+     *
+     * @param cpf O CPF a ser verificado.
+     * @return Verdadeiro se o CPF já existe, falso caso contrário.
+     */
     private boolean isCpfExistente(String cpf) {
         for (Cliente cliente : Sistema.getClientes()) {
             if (cliente.getCpf().equalsIgnoreCase(cpf)) {
@@ -230,7 +243,12 @@ public class ManterCliente implements Tela {
         }
         return false;
     }
-
+    /**
+     * Verifica se uma string pode ser convertida para um número inteiro.
+     *
+     * @param str A string a ser verificada.
+     * @return Verdadeiro se a string pode ser convertida para um número inteiro, falso caso contrário.
+     */
     public static boolean isInteger(String str) {
         if (str == null) {
             return true;
@@ -242,7 +260,13 @@ public class ManterCliente implements Tela {
         }
         return false;
     }
-
+    /**
+     * Verifica se um campo de texto está preenchido.
+     *
+     * @param textField O campo de texto a ser verificado.
+     * @param campo O nome do campo a ser verificado.
+     * @return Verdadeiro se o campo de texto está preenchido, falso caso contrário.
+     */
     public static boolean areTextFieldsFilled(JTextField textField, String campo) {
         if (textField.getText().trim().isEmpty()) {
             Mensagens.aviso(null, "Campo "+campo+" está vazio\n");
@@ -250,7 +274,12 @@ public class ManterCliente implements Tela {
         }
         return true;
     }
-
+    /**
+     * Valida um CPF.
+     *
+     * @param cpf O CPF a ser validado.
+     * @return Verdadeiro se o CPF é válido, falso caso contrário.
+     */
     public static boolean validaCpf(String cpf) {
         int soma = 0, resto = 0;
 
@@ -284,9 +313,16 @@ public class ManterCliente implements Tela {
         }
         return false;
     }
-
+    /**
+     * Este método retorna o frame da tela.
+     *
+     * @return O frame da tela.
+     */
     public JPanel getFrame() {
         return frame;
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
