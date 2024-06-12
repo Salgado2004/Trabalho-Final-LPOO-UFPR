@@ -13,6 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
+/**
+ * Classe responsável por vincular um cliente a uma conta.
+ * Implementa a interface Tela.
+ */
 public class VincularCliente implements Tela {
     private JPanel frame;
     private JButton voltarButton;
@@ -32,7 +36,10 @@ public class VincularCliente implements Tela {
     private Cliente clienteSelecionado;
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
-
+    /**
+     * Construtor da classe VincularCliente.
+     * Inicializa os componentes da interface e define os listeners dos botões.
+     */
     public VincularCliente() {
         excluirButton.setIcon(Imagens.DELETE.icon());
         gerenciarContaButton.setIcon(Imagens.DEPOSITO.icon());
@@ -172,13 +179,20 @@ public class VincularCliente implements Tela {
             }
         });
     }
-
-
-
+    /**
+     * Retorna o painel principal da tela.
+     *
+     * @return O painel principal da tela.
+     */
     public JPanel getFrame() {
         return frame;
     }
-
+    /**
+     * Verifica se um campo de texto está preenchido e se o valor pode ser convertido para um número.
+     *
+     * @param textField O campo de texto a ser verificado.
+     * @return Verdadeiro se o campo de texto está preenchido e o valor pode ser convertido para um número, falso caso contrário.
+     */
     private boolean verificaCampo(JTextField textField){
         if (!textField.getText().isEmpty()){
             try {
