@@ -1,20 +1,24 @@
 package main.br.ufpr.models;
 
-/* Criar uma classe ContaInvestimento
-
- A classe deve herdar a super Conta
- A classe deve ter os métodos deposita(), saca() e remunera() conforme R1
- A classe deve ter testes unitários, com pelo menos 95% de cobertura
-R1
-public boolean deposita(double valor): Recebe como parâmetro o valor a ser depositado. Se o valor a ser depositado for maior ou igual ao depositoMinimo então, o depósito deve ser efetuado. Para isso chame o método deposita da classe pai (Conta) e retorne true. Caso contrário, deve-se retornar false. Mostrar mensagem na tela informando usuário.
-
-public boolean saca(double valor): Recebe como parâmetro o valor a ser sacado. Se o novo valor do saldo (considerando o saque) for maior ou igual ao montanteMinimo, o saque deve ser efetuado. Para isso invoque o método saque da classe pai (Conta) e retorne true. Caso contrário, deve-se retornar false. Mostrar mensagem na tela informando usuário.
-public void remunera(): Aplicar remuneração de 2% ao saldo da conta. */
+/**
+ * Esta classe representa uma Conta de Investimento no sistema.
+ * É uma subclasse da classe Conta e inclui informações adicionais como depósito inicial, depósito mínimo e montante mínimo.
+ */
 public class ContaInvestimento extends Conta {
     private final double depositoInicial;
     private final double depositoMinimo;
     private final double montanteMinimo;
 
+    /**
+     * Construtor para a classe ContaInvestimento.
+     * Define os valores iniciais para as variáveis de instância.
+     *
+     * @param numero          O número da conta.
+     * @param dono            O proprietário da conta.
+     * @param saldo           O saldo inicial da conta.
+     * @param depositoMinimo  O depósito mínimo da conta.
+     * @param montanteMinimo  O montante mínimo da conta.
+     */
     public ContaInvestimento(int numero, Cliente dono, double saldo, double depositoMinimo, double montanteMinimo) {
         super(numero, dono, saldo);
         this.depositoInicial = saldo;
@@ -22,6 +26,16 @@ public class ContaInvestimento extends Conta {
         this.montanteMinimo = montanteMinimo;
     }
 
+    /**
+     * Construtor para a classe ContaInvestimento.
+     * Define os valores iniciais para as variáveis de instância.
+     * O número da conta é incrementado automaticamente.
+     *
+     * @param dono            O proprietário da conta.
+     * @param saldo           O saldo inicial da conta.
+     * @param depositoMinimo  O depósito mínimo da conta.
+     * @param montanteMinimo  O montante mínimo da conta.
+     */
     public ContaInvestimento(Cliente dono, double saldo, double depositoMinimo, double montanteMinimo) {
         super(dono, saldo);
         this.depositoInicial = saldo;
@@ -29,6 +43,13 @@ public class ContaInvestimento extends Conta {
         this.montanteMinimo = montanteMinimo;
     }
 
+    /**
+     * Este método deposita um valor na conta.
+     * Verifica se o valor é maior ou igual ao depósito mínimo antes de depositar.
+     *
+     * @param valor O valor a ser depositado.
+     * @return      Verdadeiro se o depósito foi bem-sucedido, falso caso contrário.
+     */
     @Override
     public boolean deposita(double valor) {
         try {
@@ -43,6 +64,13 @@ public class ContaInvestimento extends Conta {
         }
     }
 
+    /**
+     * Este método saca um valor da conta.
+     * Verifica se o novo valor do saldo (considerando o saque) é maior ou igual ao montante mínimo antes de sacar.
+     *
+     * @param valor O valor a ser sacado.
+     * @return      Verdadeiro se o saque foi bem-sucedido, falso caso contrário.
+     */
     @Override
     public boolean saca(double valor) {
         try {
@@ -57,23 +85,41 @@ public class ContaInvestimento extends Conta {
         }
     }
 
+    /**
+     * Este método calcula a remuneração da conta.
+     * Adiciona 2% do saldo atual ao saldo.
+     */
     @Override
     public void remunera() {
         this.saldo += this.saldo * 0.02;
     }
 
+    // Os getters para as variáveis de instância estão aqui.
+
+    /**
+     * Este método retorna o depósito mínimo da conta.
+     *
+     * @return O depósito mínimo da conta.
+     */
     public double getDepositoMinimo() {
         return this.depositoMinimo;
     }
 
+    /**
+     * Este método retorna o montante mínimo da conta.
+     *
+     * @return O montante mínimo da conta.
+     */
     public double getMontanteMinimo() {
         return this.montanteMinimo;
     }
 
-
-
+    /**
+     * Este método retorna o depósito inicial da conta.
+     *
+     * @return O depósito inicial da conta.
+     */
     public double getDepositoInicial() {
         return this.depositoInicial;
     }
-
 }
