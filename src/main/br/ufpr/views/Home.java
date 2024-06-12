@@ -7,14 +7,28 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Esta classe representa a tela inicial do sistema.
+ * Ela implementa a interface Tela e define os botões e ações da tela inicial.
+ */
 public class Home implements Tela {
     private JPanel frame;
     private JButton clientesButton;
     private JButton contasButton;
     private JButton transactionsButton;
 
+    /**
+     * Construtor para a classe Home.
+     * Define os valores iniciais para as variáveis de instância e adiciona os ouvintes de ação aos botões.
+     */
     public Home() {
         clientesButton.addActionListener(new ActionListener() {
+            /**
+             * Este método é chamado quando o botão Clientes é clicado.
+             * Ele navega para a tela ManterCliente.
+             *
+             * @param e O evento de ação.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 ManterCliente frame = new ManterCliente();
@@ -22,6 +36,12 @@ public class Home implements Tela {
             }
         });
         contasButton.addActionListener(new ActionListener() {
+            /**
+             * Este método é chamado quando o botão Contas é clicado.
+             * Ele navega para a tela VincularCliente.
+             *
+             * @param e O evento de ação.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 VincularCliente frame = new VincularCliente();
@@ -29,6 +49,12 @@ public class Home implements Tela {
             }
         });
         transactionsButton.addActionListener(new ActionListener() {
+            /**
+             * Este método é chamado quando o botão Transações é clicado.
+             * Ele navega para a tela ManipularConta.
+             *
+             * @param e O evento de ação.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 ManipularConta frame = new ManipularConta();
@@ -37,6 +63,11 @@ public class Home implements Tela {
         });
     }
 
+    /**
+     * Este método retorna o frame da tela.
+     *
+     * @return O frame da tela.
+     */
     public JPanel getFrame() {
         return frame;
     }
