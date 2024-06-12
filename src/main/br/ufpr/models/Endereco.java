@@ -29,7 +29,21 @@ public class Endereco {
         this.cidade = cidade.toUpperCase();
     }
 
-    // Os getters para as variáveis de instância estão aqui.
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
 
     /**
      * Este método privado verifica se o número é válido.

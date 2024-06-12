@@ -1,5 +1,6 @@
 package main.br.ufpr.views;
 
+import main.br.ufpr.controllers.Imagens;
 import main.br.ufpr.controllers.Mensagens;
 import main.br.ufpr.controllers.Sistema;
 import main.br.ufpr.models.Cliente;
@@ -7,6 +8,7 @@ import main.br.ufpr.models.Endereco;
 import main.br.ufpr.models.Tela;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 /**
@@ -29,6 +31,7 @@ public class ManterCliente implements Tela {
     private JButton inserirButton;
     private JButton editarButton;
     private JButton excluirButton;
+    private JScrollPane scrollPanel;
     private ManterClienteTableModel tabelaModel = new ManterClienteTableModel(Sistema.getClientes());
 
 
@@ -39,6 +42,15 @@ public class ManterCliente implements Tela {
     public ManterCliente() {
         tabelaClientes.setModel(tabelaModel);
         tabelaClientes.setColumnModel(tabelaClientes.getColumnModel());
+
+        excluirButton.setIcon(Imagens.DELETE.icon());
+        editarButton.setIcon(Imagens.EDIT.icon());
+        buscarButton.setIcon(Imagens.SEARCH.icon());
+        inserirButton.setIcon(Imagens.ADD.icon());
+
+        scrollPanel.getViewport().setBackground(new Color(5,28,59));
+        tabelaClientes.getTableHeader().setBackground(new Color(225,248,255));
+
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
