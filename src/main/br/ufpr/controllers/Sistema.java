@@ -103,15 +103,15 @@ public class Sistema {
         frame.setVisible(true);
 
         Endereco endereco1 = new Endereco("Rua A", "Prado Velho", "250", "Curitiba");
-        Cliente c1 = new Cliente("Pedro", "Souza", endereco1, "09124024902", "129711280");
+        Cliente c1 = new Cliente("Pedro", "Souza", endereco1, "948.312.270-80", "129711280");
         cadastrarCliente(c1);
 
         Endereco endereco2 = new Endereco("Rua B", "Cajuru", "1134", "Curitiba");
-        Cliente c2 = new Cliente("Alisson", "Santos", endereco2, "11754317960", "119264210");
+        Cliente c2 = new Cliente("Alisson", "Santos", endereco2, "885.434.710-87", "119264210");
         cadastrarCliente(c2);
 
         Endereco endereco3 = new Endereco("Rua C", "Jardim Amélia", "65", "Pinhais");
-        Cliente c3 = new Cliente("Leonardo", "Salgado", endereco3, "10619416980", "129321481");
+        Cliente c3 = new Cliente("Leonardo", "Salgado", endereco3, "632.872.080-71", "129321481");
         cadastrarCliente(c3);
     }
 

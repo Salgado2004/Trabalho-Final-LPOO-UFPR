@@ -9,6 +9,7 @@ import main.br.ufpr.models.ContaInvestimento;
 import main.br.ufpr.models.Tela;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
@@ -36,6 +37,7 @@ public class VincularCliente implements Tela {
     private Cliente clienteSelecionado;
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
+    private JScrollPane scrollPanel;
     /**
      * Construtor da classe VincularCliente.
      * Inicializa os componentes da interface e define os listeners dos botões.
@@ -47,6 +49,8 @@ public class VincularCliente implements Tela {
         tabela.setModel(tabelaModel);
         tabela.setColumnModel(tabela.getColumnModel());
 
+        scrollPanel.getViewport().setBackground(new Color(5,28,59));
+        tabela.getTableHeader().setBackground(new Color(225,248,255));
 
         voltarButton.addActionListener(new ActionListener() {
             @Override
