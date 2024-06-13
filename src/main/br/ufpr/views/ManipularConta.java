@@ -162,10 +162,10 @@ public class ManipularConta implements Tela {
         warningLimite.setVisible(conta.getSaldo() < 0);
         if(conta.getClass() == ContaCorrente.class){
             tipoConta.setText("Sua conta é do tipo: Conta Corrente");
-            rendimento.setText("Seu rendimento é de: 101%");
+            rendimento.setText("Seu rendimento é de: 1% do montante total");
         } else {
             tipoConta.setText("Sua conta é do tipo: Conta de Investimento");
-            rendimento.setText("Seu rendimento é de: 102%");
+            rendimento.setText("Seu rendimento é de: 2% do montante total");
         }
     }
 
