@@ -38,7 +38,17 @@ public class ContaCorrente extends Conta {
         this.limite = limite;
     }
 
-    // Os getters e setters para as variáveis de instância estão aqui.
+    public double getLimite() {
+        return this.limite;
+    }
+
+    public void setLimite(double limite) {
+        this.limite = limite;
+    }
+
+    public double getDepositoInicial() {
+        return this.depositoInicial;
+    }
 
     /**
      * Este método saca um valor da conta.

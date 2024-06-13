@@ -69,7 +69,17 @@ public abstract class Conta implements ContaI {
         return false;
     }
 
-    // Os getters para as variáveis de instância estão aqui.
+    public Cliente getDono() {
+        return this.dono;
+    }
+
+    public int getNumero() {
+        return this.numero;
+    }
+
+    public double getSaldo() {
+        return this.saldo;
+    }
 
     /**
      * Este é um método abstrato que deve ser implementado nas subclasses.
