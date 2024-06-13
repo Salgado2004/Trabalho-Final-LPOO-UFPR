@@ -36,7 +36,59 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-    // Os getters e setters para as variáveis de instância estão aqui.
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        nome = nome.toUpperCase();
+
+        if (!validaNome(nome)) {
+            throw new IllegalArgumentException("Nome inválido");
+        }
+        this.nome = nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        sobrenome = sobrenome.toUpperCase();
+        if (!validaNome(sobrenome)) {
+            throw new IllegalArgumentException("Sobrenome inválido");
+        }
+        this.sobrenome = sobrenome;
+    }
+
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public Conta getConta() {
+        return conta;
+    }
+
+    public void setConta(Conta conta) {
+        this.conta = conta;
+    }
 
     /**
      * Este método valida o nome do cliente.
@@ -62,7 +114,30 @@ public class Cliente {
         int soma = 0, resto = 0;
 
         if(cpf.matches("[0-9]{11}") && !cpf.matches("^(\\d)\\1{10}")){
-            // A lógica de validação do CPF está aqui.
+            for (int i = 0; i < 9; i++) {
+                soma += Integer.parseInt(cpf.substring(i, i + 1)) * (10 - i);
+            }
+            resto = 11 - (soma % 11);
+            if (resto == 10 || resto == 11) {
+                resto = 0;
+            }
+            if (resto != Integer.parseInt(cpf.substring(9, 10))) {
+                return false;
+            }
+
+            soma = 0;
+            for (int i = 0; i < 10; i++) {
+                soma += Integer.parseInt(cpf.substring(i, i + 1)) * (11 - i);
+            }
+            resto = 11 - (soma % 11);
+            if (resto == 10 || resto == 11) {
+                resto = 0;
+            }
+            if (resto != Integer.parseInt(cpf.substring(10, 11))) {
+                return false;
+            }
+
+            return true;
         }
         return false;
     }

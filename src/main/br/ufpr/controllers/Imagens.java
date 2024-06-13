@@ -16,6 +16,8 @@ public enum Imagens {
     EYE_CLOSED("eye_closed.png"),
     SEARCH("search.png"),
     DELETE("delete.png"),
+    EDIT("edit.png"),
+    ADD("add.png"),
     DEPOSITO("deposito.png"),
     SAQUE("saque.png"),
     REMUNERA("remunera.png"),
