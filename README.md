@@ -30,7 +30,7 @@ Desenvolvimento do sistema bancário do **`Banco TADS-UFPR`**
 
 [Download latest release](https://github.com/Salgado2004/Trabalho-Final-LPOO-UFPR/releases/latest)
 
-<img src="./assets/logo.jpg" width="65%"></img>
+<img src="./src/assets/logo.jpg" width="65%"></img>
 
 ## Documentação
 
@@ -38,6 +38,6 @@ Desenvolvimento do sistema bancário do **`Banco TADS-UFPR`**
 Veja [Documentação Javadoc](https://salgado2004.github.io/Trabalho-Final-LPOO-UFPR/)
 
 ### Diagrama de classes
-![image](./assets/diagrama.png)
+![image](src/assets/diagrama.png)
 
 

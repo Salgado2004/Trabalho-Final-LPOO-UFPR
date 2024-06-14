@@ -38,11 +38,13 @@ public class VincularCliente implements Tela {
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
     private JScrollPane scrollPanel;
+    private int rowSelecionada;
     /**
      * Construtor da classe VincularCliente.
      * Inicializa os componentes da interface e define os listeners dos botões.
      */
     public VincularCliente() {
+
         excluirButton.setIcon(Imagens.DELETE.icon());
         gerenciarContaButton.setIcon(Imagens.DEPOSITO.icon());
 
@@ -85,9 +87,12 @@ public class VincularCliente implements Tela {
             }
         });
 
+
+
         tabela.getSelectionModel().addListSelectionListener(e -> {
             if (tabela.getSelectedRow() != -1) {
                 clienteSelecionado = Sistema.getClientes().get(tabela.getSelectedRow());
+                rowSelecionada = tabela.getSelectedRow();
                 tipoConta.setEnabled(false);
                 excluirButton.setVisible(true);
                 gerenciarContaButton.setVisible(true);
@@ -122,14 +127,15 @@ public class VincularCliente implements Tela {
 
 
         salvarButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                switch (tipoConta.getSelectedItem().toString()) {
 
+                switch (tipoConta.getSelectedItem().toString()) {
                     case "Conta Corrente":
                         if(verificaCampo(textField1) && verificaCampo(textField2)) {
                             corrente = new ContaCorrente(
-                                    Sistema.getClientes().get(tabela.getSelectedRow()),
+                                    Sistema.getClientes().get(rowSelecionada),
                                     Double.parseDouble(textField1.getText()),
                                     Double.parseDouble(textField2.getText())
                             );
@@ -143,7 +149,7 @@ public class VincularCliente implements Tela {
                     case "Conta Investimento":
                         if(verificaCampo(textField1) && verificaCampo(textField2) && verificaCampo(textField3)) {
                             investimento = new ContaInvestimento(
-                                    Sistema.getClientes().get(tabela.getSelectedRow()),
+                                    Sistema.getClientes().get(rowSelecionada),
                                     Double.parseDouble(textField1.getText()),
                                     Double.parseDouble(textField3.getText()),
                                     Double.parseDouble(textField2.getText())
