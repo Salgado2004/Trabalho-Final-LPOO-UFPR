@@ -190,6 +190,8 @@ public class ManterCliente implements Tela {
                     return;
                 }
 
+                cpf = cpf.replaceAll("[^0-9]", "");
+
                 for (Cliente cliente : Sistema.getClientes()) {
                     if (cliente.getCpf().equalsIgnoreCase(cpf)) {
                         cliente.setNome(nome);
