@@ -91,7 +91,9 @@ public class ContaInvestimento extends Conta {
      */
     @Override
     public void remunera() {
+
         this.saldo += this.saldo * 0.02;
+        support.firePropertyChange("saldo", null, this.saldo);
     }
 
     // Os getters para as variáveis de instância estão aqui.
