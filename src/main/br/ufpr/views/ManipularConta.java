@@ -7,16 +7,18 @@ import main.br.ufpr.models.Cliente;
 import main.br.ufpr.models.Conta;
 import main.br.ufpr.models.ContaCorrente;
 import main.br.ufpr.models.Tela;
+import main.br.ufpr.services.Observer;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
 
 /**
  * Classe que representa a tela de manipulação de conta
  * Realiza transações como saque, depósito e investimento
  * @see Tela
  */
-public class ManipularConta implements Tela {
+public class ManipularConta implements Tela, Observer {
     private Conta conta;
     private JPanel frame;
     private JButton voltarButton;
@@ -86,7 +88,6 @@ public class ManipularConta implements Tela {
                     double valor = Double.parseDouble(valorSaque.getText());
                     if(conta.saca(valor)){
                         Mensagens.sucesso(dadosConta, "Saque realizado com sucesso");
-                        loadConta();
                     } else {
                         Mensagens.aviso(dadosConta, conta.getClass() == ContaCorrente.class ? "Saldo/limite insuficiente" : "O valor restante é inferior ao montante mínimo");
                     }
@@ -103,7 +104,6 @@ public class ManipularConta implements Tela {
                     double valor = Double.parseDouble(valorDeposito.getText());
                     if(conta.deposita(valor)) {
                         Mensagens.sucesso(dadosConta, "Depósito realizado com sucesso");
-                        loadConta();
                     } else {
                         Mensagens.aviso(dadosConta, "Depósito mínimo não atingido");
                     }
@@ -118,7 +118,6 @@ public class ManipularConta implements Tela {
                 if(conta.getSaldo() > 0){
                     conta.remunera();
                     Mensagens.sucesso(dadosConta, "Investimento realizado com sucesso");
-                    loadConta();
                 } else {
                     Mensagens.aviso(dadosConta, "Saldo insuficiente para investir");
                 }
@@ -167,6 +166,7 @@ public class ManipularConta implements Tela {
             tipoConta.setText("Sua conta é do tipo: Conta de Investimento");
             rendimento.setText("Seu rendimento é de: 2% do montante total");
         }
+        conta.addObserver(this);
     }
 
     /**
@@ -176,5 +176,18 @@ public class ManipularConta implements Tela {
      */
     public JPanel getFrame() {
         return frame;
+    }
+
+    /**
+     * Método que atualiza o saldo da conta
+     * @param evt Evento de mudança de propriedade
+     * @see Observer
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName().equals("saldo")){
+            saldo.setText("R$ " + String.format("%.2f", conta.getSaldo()).replace(".", ",") );
+            warningLimite.setVisible(conta.getSaldo() < 0);
+        }
     }
 }
