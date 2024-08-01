@@ -7,12 +7,13 @@ import main.br.ufpr.models.Cliente;
 import main.br.ufpr.models.ContaCorrente;
 import main.br.ufpr.models.ContaInvestimento;
 import main.br.ufpr.models.Tela;
+import main.br.ufpr.services.FactoryConta;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Classe responsável por vincular um cliente a uma conta.
@@ -22,7 +23,7 @@ public class VincularCliente implements Tela {
     private JPanel frame;
     private JButton voltarButton;
     private JComboBox tipoConta;
-    private JTextField textField1;
+    private JTextField depositoInicial;
     private JTextField textField2;
     private JTextField textField3;
     private JButton salvarButton;
@@ -38,7 +39,7 @@ public class VincularCliente implements Tela {
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
     private JScrollPane scrollPanel;
-    private int rowSelecionada;
+
     /**
      * Construtor da classe VincularCliente.
      * Inicializa os componentes da interface e define os listeners dos botões.
@@ -64,10 +65,11 @@ public class VincularCliente implements Tela {
         tipoConta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                label1.setText("Depósito Inicial:");
+
                 switch (Objects.requireNonNull(tipoConta.getSelectedItem()).toString()) {
                     case "Conta Corrente":
                         formulario.setVisible(true);
-                        label1.setText("Depósito Inicial:");
                         label2.setText("Limite:");
                         label3.setVisible(false);
                         textField3.setVisible(false);
@@ -76,7 +78,6 @@ public class VincularCliente implements Tela {
                         formulario.setVisible(true);
                         label3.setVisible(true);
                         textField3.setVisible(true);
-                        label1.setText("Depósito Inicial:");
                         label2.setText("Montante Mínimo:");
                         label3.setText("Depósito Mínimo:");
                         break;
@@ -92,7 +93,6 @@ public class VincularCliente implements Tela {
         tabela.getSelectionModel().addListSelectionListener(e -> {
             if (tabela.getSelectedRow() != -1) {
                 clienteSelecionado = Sistema.getClientes().get(tabela.getSelectedRow());
-                rowSelecionada = tabela.getSelectedRow();
                 tipoConta.setEnabled(false);
                 excluirButton.setVisible(true);
                 gerenciarContaButton.setVisible(true);
@@ -101,19 +101,19 @@ public class VincularCliente implements Tela {
                     case "ContaCorrente":
                         tipoConta.setSelectedItem("Conta Corrente");
                         corrente = (ContaCorrente) clienteSelecionado.getConta();
-                        textField1.setText(String.valueOf(corrente.getDepositoInicial()));
+                        depositoInicial.setText(String.valueOf(corrente.getDepositoInicial()));
                         textField2.setText(String.valueOf(corrente.getLimite()));
                         break;
                     case "ContaInvestimento":
                         tipoConta.setSelectedItem("Conta Investimento");
                         investimento = (ContaInvestimento) clienteSelecionado.getConta();
-                        textField1.setText(String.valueOf(investimento.getDepositoInicial()));
+                        depositoInicial.setText(String.valueOf(investimento.getDepositoInicial()));
                         textField2.setText(String.valueOf(investimento.getMontanteMinimo()));
                         textField3.setText(String.valueOf(investimento.getDepositoMinimo()));
                         break;
                     default:
                         tipoConta.setSelectedItem("");
-                        textField1.setText("");
+                        depositoInicial.setText("");
                         textField2.setText("");
                         textField3.setText("");
                         excluirButton.setVisible(false);
@@ -131,40 +131,21 @@ public class VincularCliente implements Tela {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                switch (tipoConta.getSelectedItem().toString()) {
-                    case "Conta Corrente":
-                        if(verificaCampo(textField1) && verificaCampo(textField2)) {
-                            corrente = new ContaCorrente(
-                                    Sistema.getClientes().get(rowSelecionada),
-                                    Double.parseDouble(textField1.getText()),
-                                    Double.parseDouble(textField2.getText())
-                            );
-                            Sistema.cadastrarConta(corrente);
-                            clienteSelecionado.setConta(corrente);
-                            Mensagens.sucesso(frame, "Conta cadastrada com sucesso!");
-                            formulario.setVisible(false);
-                            tipoConta.setEnabled(false);
-                        }
-                        break;
-                    case "Conta Investimento":
-                        if(verificaCampo(textField1) && verificaCampo(textField2) && verificaCampo(textField3)) {
-                            investimento = new ContaInvestimento(
-                                    Sistema.getClientes().get(rowSelecionada),
-                                    Double.parseDouble(textField1.getText()),
-                                    Double.parseDouble(textField3.getText()),
-                                    Double.parseDouble(textField2.getText())
-                            );
-                            Sistema.cadastrarConta(investimento);
-                            clienteSelecionado.setConta(investimento);
-                            Mensagens.sucesso(frame, "Conta cadastrada com sucesso!");
-                            formulario.setVisible(false);
-                            tipoConta.setEnabled(false);
-                        }
-                        break;
+                FactoryConta factory = new FactoryConta();
+                ArrayList<JTextField> campos = new ArrayList<>(Arrays.asList(depositoInicial, textField2, textField3));
+
+                try {
+                    factory.abrirConta(tipoConta.getSelectedItem().toString(), clienteSelecionado, validaCampos(campos));
+                    Mensagens.sucesso(frame, "Conta cadastrada com sucesso!");
+                    formulario.setVisible(false);
+                    tipoConta.setEnabled(false);
+                    tabelaModel.fireTableDataChanged();
+
+                } catch (NumberFormatException ex){
+                    Mensagens.erro(frame, ex.getMessage());
+                } catch (IllegalArgumentException ex){
+                    Mensagens.aviso(frame, ex.getMessage());
                 }
-                tabelaModel.fireTableDataChanged();
-                corrente = null;
-                investimento = null;
             }
         });
 
@@ -183,7 +164,7 @@ public class VincularCliente implements Tela {
                 Sistema.getContas().remove(clienteSelecionado.getConta());
                 clienteSelecionado.setConta(null);
                 tabelaModel.fireTableDataChanged();
-                JOptionPane.showMessageDialog(frame, "Conta excluída com sucesso");
+                Mensagens.sucesso(frame, "Conta excluída com sucesso");
                 tipoConta.setSelectedIndex(0);
 
             }
@@ -197,24 +178,28 @@ public class VincularCliente implements Tela {
     public JPanel getFrame() {
         return frame;
     }
+
     /**
-     * Verifica se um campo de texto está preenchido e se o valor pode ser convertido para um número.
+     * Valida se todos os campos necessários estão preenchidos corretamente e, se estiver, retorna um array com os valores dos campos.
      *
-     * @param textField O campo de texto a ser verificado.
-     * @return Verdadeiro se o campo de texto está preenchido e o valor pode ser convertido para um número, falso caso contrário.
+     * @param campos ArrayList de campos de texto a serem verificados.
+     * @return ArrayList com os valores dos campos.
+     * @throws NumberFormatException Se um dos campos não for um número válido.
+     * @throws IllegalArgumentException Se um dos campos estiver vazio.
      */
-    private boolean verificaCampo(JTextField textField){
-        if (!textField.getText().isEmpty()){
-            try {
-                Double.parseDouble(textField.getText());
-                return true;
-            } catch (NumberFormatException e){
-                Mensagens.aviso(frame, "Preencha os campos corretamente");
-                return false;
+    private ArrayList<Double> validaCampos(ArrayList<JTextField> campos){
+        ArrayList<Double> valores = new ArrayList<>();
+        for (JTextField campo : campos){
+            if (!campo.isVisible()) continue;
+            if (campo.getText().isEmpty()){
+                throw new IllegalArgumentException("Preencha todos os campos");
             }
-        } else {
-            Mensagens.aviso(frame, "Preencha todos os campos");
-            return false;
+            try {
+                valores.add(Double.parseDouble(campo.getText()));
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException("Valor '" + campo.getText() + "' inválido");
+            }
         }
+        return valores;
     }
 }
