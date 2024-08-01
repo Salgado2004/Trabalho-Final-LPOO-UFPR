@@ -1,5 +1,9 @@
 package main.br.ufpr.models;
 
+import main.br.ufpr.services.Observer;
+
+import java.beans.PropertyChangeSupport;
+
 /**
  * Esta é uma classe abstrata que representa uma conta no sistema.
  * Inclui informações como número da conta, proprietário (cliente) e saldo.
@@ -10,6 +14,7 @@ public abstract class Conta implements ContaI {
     protected int numero;
     protected Cliente dono;
     protected double saldo;
+    PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /**
      * Construtor para a classe Conta.
@@ -40,6 +45,15 @@ public abstract class Conta implements ContaI {
     }
 
     /**
+     * Este método adiciona um observador à conta.
+     *
+     * @param observer O observador a ser adicionado.
+     */
+    public void addObserver(Observer observer) {
+        this.support.addPropertyChangeListener(observer);
+    }
+
+    /**
      * Este método deposita um valor na conta.
      * Verifica se o valor é maior que 0 antes de depositar.
      *
@@ -49,6 +63,7 @@ public abstract class Conta implements ContaI {
     public boolean deposita(double valor) {
         if (valor > 0) {
             this.saldo += valor;
+            support.firePropertyChange("saldo", null, this.saldo);
             return true;
         }
         return false;
@@ -64,6 +79,7 @@ public abstract class Conta implements ContaI {
     public boolean saca(double valor) {
         if (valor > 0 && valor <= this.saldo) {
             this.saldo -= valor;
+            support.firePropertyChange("saldo", null, this.saldo);
             return true;
         }
         return false;

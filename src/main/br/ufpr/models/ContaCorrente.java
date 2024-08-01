@@ -61,6 +61,7 @@ public class ContaCorrente extends Conta {
     public boolean saca(double valor) {
         if (valor > 0 && valor <= this.saldo + this.limite) {
             this.saldo -= valor;
+            support.firePropertyChange("saldo", null, this.saldo);
             return true;
         }
         return false;
@@ -72,5 +73,6 @@ public class ContaCorrente extends Conta {
      */
     public void remunera() {
         this.saldo += this.saldo * 0.01;
+        support.firePropertyChange("saldo", null, this.saldo);
     }
 }
