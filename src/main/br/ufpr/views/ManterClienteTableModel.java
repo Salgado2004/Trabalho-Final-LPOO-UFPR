@@ -3,6 +3,8 @@ package main.br.ufpr.views;
 import main.br.ufpr.models.Cliente;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * Ela estende AbstractTableModel e define as colunas e os dados da tabela.
  */
 public class ManterClienteTableModel extends AbstractTableModel {
-    private List<Cliente> clientes = new ArrayList<>();
+    private final List<Cliente> clientes;
     private final String[] columns = {"Nome", "Sobrenome", "Endereço", "CPF", "RG"};
 
     /**
@@ -53,21 +55,14 @@ public class ManterClienteTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Cliente cliente = clientes.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return cliente.getNome();
-            case 1:
-                return cliente.getSobrenome();
-            case 2:
-                String adress = (cliente.getEndereco().getLogradouro() +", " + cliente.getEndereco().getNumero());
-                return adress;
-            case 3:
-                return cliente.getCpf();
-            case 4:
-                return cliente.getRg();
-            default:
-                return null;
-        }
+        return switch (columnIndex) {
+            case 0 -> cliente.getNome();
+            case 1 -> cliente.getSobrenome();
+            case 2 -> (cliente.getEndereco().getLogradouro() + ", " + cliente.getEndereco().getNumero());
+            case 3 -> cliente.getCpf();
+            case 4 -> cliente.getRg();
+            default -> null;
+        };
     }
 
     /**
@@ -92,6 +87,15 @@ public class ManterClienteTableModel extends AbstractTableModel {
         if(getValueAt(0, columnIndex) != null)
             return getValueAt(0, columnIndex).getClass();
         return Object.class;
+    }
+
+    /**
+     * Esse método ordena a lista de clientes de acordo com o comparador fornecido.
+     * @param comparador O comparador a ser usado para ordenar a lista de clientes.
+     */
+    public void sortClientes(Comparator comparador){
+        clientes.sort(comparador);
+        fireTableDataChanged();
     }
 
 }
