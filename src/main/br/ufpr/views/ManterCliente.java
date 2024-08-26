@@ -6,11 +6,14 @@ import main.br.ufpr.controllers.Sistema;
 import main.br.ufpr.models.Cliente;
 import main.br.ufpr.models.Endereco;
 import main.br.ufpr.models.Tela;
+import main.br.ufpr.models.comparables.NomeComparator;
+import main.br.ufpr.models.comparables.SobrenomeComparator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.Comparator;
+
 /**
  * Esta classe representa a tela de manutenção do cliente.
  * Ela implementa a interface Tela e define os campos de entrada e botões para inserir, editar, excluir e buscar clientes.
@@ -32,6 +35,8 @@ public class ManterCliente implements Tela {
     private JButton editarButton;
     private JButton excluirButton;
     private JScrollPane scrollPanel;
+    private JComboBox comboOrdem;
+    private Comparator comparator;
     private ManterClienteTableModel tabelaModel = new ManterClienteTableModel(Sistema.getClientes());
 
 
@@ -50,6 +55,9 @@ public class ManterCliente implements Tela {
 
         scrollPanel.getViewport().setBackground(new Color(5,28,59));
         tabelaClientes.getTableHeader().setBackground(new Color(225,248,255));
+
+        comparator = new NomeComparator();
+        tabelaModel.sortClientes(comparator);
 
         voltarButton.addActionListener(new ActionListener() {
             @Override
@@ -240,6 +248,19 @@ public class ManterCliente implements Tela {
                 textFieldRG.setText("");
 
                 tabelaModel.fireTableDataChanged();
+            }
+        });
+        comboOrdem.addComponentListener(new ComponentAdapter() {
+        });
+        comboOrdem.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (comboOrdem.getSelectedIndex() == 1) {
+                    comparator = new SobrenomeComparator();
+                } else {
+                    comparator = new NomeComparator();
+                }
+                tabelaModel.sortClientes(comparator);
             }
         });
     }
