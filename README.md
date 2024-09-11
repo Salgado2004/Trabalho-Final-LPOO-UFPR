@@ -16,8 +16,6 @@ Trabalho prático final de Linguagem de Programação Orientada a Objetos do cur
 - [Alunos](#alunos)
 - [Sistema](#sistema)
 - [Documentação](#documentação)
-  - [Javadoc](#javadoc)
-  - [Diagrama de classes](#diagrama-de-classes)
 
 ## Alunos
 - Alisson Gabriel Santos [@Alisson](https://github.com/AlissonGabrielSantos)
@@ -30,14 +28,11 @@ Desenvolvimento do sistema bancário do **`Banco TADS-UFPR`**
 
 [Download latest release](https://github.com/Salgado2004/Trabalho-Final-LPOO-UFPR/releases/latest)
 
-<img src="./src/assets/logo.jpg" width="65%"></img>
-
 ## Documentação
 
-### Javadoc
-Veja [Documentação Javadoc](https://salgado2004.github.io/Trabalho-Final-LPOO-UFPR/)
+[Confira a documentação na nossa Wiki!](https://github.com/Salgado2004/Trabalho-Final-LPOO-UFPR/wiki)
 
-### Diagrama de classes
-![image](src/assets/diagrama.png)
+<img src="./src/assets/logo.jpg" width="65%"></img>
+### &copy; Tads UFPR 2024
 
 
