@@ -43,7 +43,8 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         config: |
-          queries: security-and-quality
+          queries:
+            - uses: security-and-quality
           paths-ignore:
             - 'src/test/**'
 
