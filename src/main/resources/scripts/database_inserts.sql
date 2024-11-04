@@ -45,3 +45,10 @@ INSERT INTO contaInvestimento (numeroConta, depositoInicial, depositoMinimo, mon
 (4, 2000.00, 1000.00, 2000.00),
 (5, 2500.00, 1500.00, 2500.00),
 (6, 3000.00, 2000.00, 3000.00);
+
+UPDATE cliente SET numeroConta = 1 WHERE cpf = '94831227080';
+UPDATE cliente SET numeroConta = 2 WHERE cpf = '88543471087';
+UPDATE cliente SET numeroConta = 3 WHERE cpf = '63287208071';
+UPDATE cliente SET numeroConta = 4 WHERE cpf = '31057053090';
+UPDATE cliente SET numeroConta = 5 WHERE cpf = '12345678909';
+UPDATE cliente SET numeroConta = 6 WHERE cpf = '98765432100';
