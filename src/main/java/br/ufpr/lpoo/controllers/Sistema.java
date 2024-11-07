@@ -1,6 +1,7 @@
 package br.ufpr.lpoo.controllers;
 
 import br.ufpr.lpoo.models.*;
+import br.ufpr.lpoo.utils.Imagens;
 import br.ufpr.lpoo.views.Home;
 
 import javax.swing.*;

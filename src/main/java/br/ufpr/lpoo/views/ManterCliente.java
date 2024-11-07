@@ -5,6 +5,7 @@ import br.ufpr.lpoo.models.Cliente;
 import br.ufpr.lpoo.models.Endereco;
 import br.ufpr.lpoo.models.Tela;
 import br.ufpr.lpoo.models.comparables.*;
+import br.ufpr.lpoo.utils.Imagens;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 

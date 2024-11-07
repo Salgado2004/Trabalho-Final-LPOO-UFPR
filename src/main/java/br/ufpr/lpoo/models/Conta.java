@@ -1,6 +1,6 @@
 package br.ufpr.lpoo.models;
 
-import br.ufpr.lpoo.services.Observer;
+import br.ufpr.lpoo.utils.Observer;
 
 import java.beans.PropertyChangeSupport;
 

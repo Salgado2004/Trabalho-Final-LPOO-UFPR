@@ -1,6 +1,6 @@
 package br.ufpr.lpoo.views;
 
-import br.ufpr.lpoo.controllers.Imagens;
+import br.ufpr.lpoo.utils.Imagens;
 import br.ufpr.lpoo.controllers.Sistema;
 import br.ufpr.lpoo.models.Tela;
 import com.intellij.uiDesigner.core.GridConstraints;

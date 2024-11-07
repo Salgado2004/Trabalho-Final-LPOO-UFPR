@@ -5,7 +5,8 @@ import br.ufpr.lpoo.models.Cliente;
 import br.ufpr.lpoo.models.ContaCorrente;
 import br.ufpr.lpoo.models.ContaInvestimento;
 import br.ufpr.lpoo.models.Tela;
-import br.ufpr.lpoo.services.FactoryConta;
+import br.ufpr.lpoo.utils.FactoryConta;
+import br.ufpr.lpoo.utils.Imagens;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 

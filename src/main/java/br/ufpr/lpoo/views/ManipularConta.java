@@ -2,7 +2,8 @@ package br.ufpr.lpoo.views;
 
 import br.ufpr.lpoo.controllers.*;
 import br.ufpr.lpoo.models.*;
-import br.ufpr.lpoo.services.Observer;
+import br.ufpr.lpoo.utils.Imagens;
+import br.ufpr.lpoo.utils.Observer;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
