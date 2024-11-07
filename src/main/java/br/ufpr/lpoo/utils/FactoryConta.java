@@ -1,4 +1,4 @@
-package br.ufpr.lpoo.services;
+package br.ufpr.lpoo.utils;
 
 import br.ufpr.lpoo.controllers.Sistema;
 import br.ufpr.lpoo.models.Cliente;

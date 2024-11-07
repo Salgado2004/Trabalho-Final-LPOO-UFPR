@@ -1,5 +1,7 @@
 package br.ufpr.lpoo.controllers;
 
+import br.ufpr.lpoo.utils.Imagens;
+
 import javax.swing.*;
 import java.awt.*;
 
