@@ -25,6 +25,9 @@ public abstract class Conta implements ContaI {
      * @param saldo  O saldo inicial da conta.
      */
     public Conta(int numero, Cliente dono, double saldo) {
+        if (saldo < 0) {
+            throw new IllegalArgumentException("O saldo deve ser maior que 0.");
+        }
         this.numero = numero;
         this.dono = dono;
         this.saldo = saldo;
@@ -39,9 +42,7 @@ public abstract class Conta implements ContaI {
      * @param saldo O saldo inicial da conta.
      */
     public Conta(Cliente dono, double saldo) {
-        this.numero = ++contador;
-        this.dono = dono;
-        this.saldo = saldo;
+        this(++contador, dono, saldo);
     }
 
     /**
