@@ -8,7 +8,7 @@ public class DaoFactory {
 
     public static ClienteDao getClienteDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> new ClienteDaoMysql();
+            case MYSQL -> null;//new ClienteDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };
@@ -16,7 +16,7 @@ public class DaoFactory {
 
     public static EnderecoDao getEnderecoDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> new EnderecoDaoMysql();
+            case MYSQL -> null;//new EnderecoDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };
@@ -24,19 +24,17 @@ public class DaoFactory {
 
     public static ContaCorrenteDao getContaCorrenteDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> new ContaCorrenteDaoMysql();
+            case MYSQL -> null;//new ContaCorrenteDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };
-        return null;
     }
 
     public static ContaInvestimentoDao getContaInvestimentoDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> new ContaInvestimentoDaoMysql();
+            case MYSQL -> null;//new ContaInvestimentoDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };
-        return null;
     }
 }
