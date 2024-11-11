@@ -83,12 +83,12 @@ public class ManipularConta implements Tela, Observer {
                 try {
                     double valor = Double.parseDouble(valorSaque.getText());
                     if (conta.saca(valor)) {
-                        Mensagens.sucesso(dadosConta, "Saque realizado com sucesso");
+                        MensagensController.sucesso(dadosConta, "Saque realizado com sucesso");
                     } else {
-                        Mensagens.aviso(dadosConta, conta.getClass() == ContaCorrente.class ? "Saldo/limite insuficiente" : "O valor restante é inferior ao montante mínimo");
+                        MensagensController.aviso(dadosConta, conta.getClass() == ContaCorrente.class ? "Saldo/limite insuficiente" : "O valor restante é inferior ao montante mínimo");
                     }
                 } catch (NumberFormatException ex) {
-                    Mensagens.erro(dadosConta, "Valor inserido inválido");
+                    MensagensController.erro(dadosConta, "Valor inserido inválido");
 
                 }
             }
@@ -99,12 +99,12 @@ public class ManipularConta implements Tela, Observer {
                 try {
                     double valor = Double.parseDouble(valorDeposito.getText());
                     if (conta.deposita(valor)) {
-                        Mensagens.sucesso(dadosConta, "Depósito realizado com sucesso");
+                        MensagensController.sucesso(dadosConta, "Depósito realizado com sucesso");
                     } else {
-                        Mensagens.aviso(dadosConta, "Depósito mínimo não atingido");
+                        MensagensController.aviso(dadosConta, "Depósito mínimo não atingido");
                     }
                 } catch (NumberFormatException ex) {
-                    Mensagens.erro(dadosConta, "Valor inserido inválido");
+                    MensagensController.erro(dadosConta, "Valor inserido inválido");
                 }
             }
         });
@@ -113,9 +113,9 @@ public class ManipularConta implements Tela, Observer {
             public void actionPerformed(ActionEvent e) {
                 if (conta.getSaldo() > 0) {
                     conta.remunera();
-                    Mensagens.sucesso(dadosConta, "Investimento realizado com sucesso");
+                    MensagensController.sucesso(dadosConta, "Investimento realizado com sucesso");
                 } else {
-                    Mensagens.aviso(dadosConta, "Saldo insuficiente para investir");
+                    MensagensController.aviso(dadosConta, "Saldo insuficiente para investir");
                 }
             }
         });
@@ -142,17 +142,17 @@ public class ManipularConta implements Tela, Observer {
                 if (c.getConta() != null) {
                     return c.getConta();
                 } else {
-                    Mensagens.aviso(dadosConta, "O cliente pesquisado não possui uma conta");
+                    MensagensController.aviso(dadosConta, "O cliente pesquisado não possui uma conta");
                     return null;
                 }
             }
         }
-        Mensagens.aviso(dadosConta, "Esse cliente não foi encontrado");
+        MensagensController.aviso(dadosConta, "Esse cliente não foi encontrado");
         return null;
     }
 
     private void loadConta() {
-        Mensagens.carregando(dadosConta, "Carregando dados da conta...");
+        MensagensController.carregando(dadosConta, "Carregando dados da conta...");
         saldo.setText("R$ " + String.format("%.2f", conta.getSaldo()).replace(".", ","));
         numeroConta.setText("Conta Nº: " + String.format("%6d", conta.getNumero()));
         warningLimite.setVisible(conta.getSaldo() < 0);
@@ -356,4 +356,5 @@ public class ManipularConta implements Tela, Observer {
     public JComponent $$$getRootComponent$$$() {
         return frame;
     }
+
 }
