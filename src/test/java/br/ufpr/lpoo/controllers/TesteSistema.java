@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TesteSistema {
     @Test
-    public void adicionarCliente() {
+    public void adicionarCliente() throws Exception {
         Endereco endereco = new Endereco("Rua Carlos Maia", "Cajuru", "123", "Curitiba");
         Cliente cliente = new Cliente("João Dória", "Silva", endereco, "400.855.360-67", "123456789");
         Sistema.cadastrarCliente(cliente);

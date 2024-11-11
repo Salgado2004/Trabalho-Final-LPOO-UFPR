@@ -1,5 +1,7 @@
 package br.ufpr.lpoo.models.connection;
 
+import br.ufpr.lpoo.models.connection.mysql.ClienteDaoMysql;
+
 import javax.naming.OperationNotSupportedException;
 
 public class DaoFactory {
@@ -8,7 +10,7 @@ public class DaoFactory {
 
     public static ClienteDao getClienteDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> null;//new ClienteDaoMysql();
+            case MYSQL -> new ClienteDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };

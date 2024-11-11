@@ -11,7 +11,7 @@ import java.util.List;
  * Ela estende AbstractTableModel e define as colunas e os dados da tabela.
  */
 public class ManterClienteTableModel extends AbstractTableModel {
-    private final List<Cliente> clientes;
+    private List<Cliente> clientes;
     private final String[] columns = {"Nome", "Sobrenome", "Endereço", "CPF", "RG"};
 
     /**
@@ -22,6 +22,15 @@ public class ManterClienteTableModel extends AbstractTableModel {
      */
     public ManterClienteTableModel(List<Cliente> clientes){
         this.clientes = clientes;
+    }
+
+    public void updateList(List<Cliente> lista){
+        this.clientes = lista;
+        this.fireTableDataChanged();
+    }
+
+    public Cliente getClientAt(int index){
+        return this.clientes.get(index);
     }
 
     /**
