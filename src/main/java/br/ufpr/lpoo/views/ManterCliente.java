@@ -86,21 +86,21 @@ public class ManterCliente implements Tela {
                 cpf = cpf.replaceAll("[^0-9]", "");
 
                 if (isInteger(numero)) {
-                    Mensagens.erro(null, "Número Inválido\n");
+                    MensagensController.erro(null, "Número Inválido\n");
                     return;
                 }
 
                 if (cpf.equals("")) {
-                    Mensagens.erro(null, "Campo CPF não pode estar vazio\n");
+                    MensagensController.erro(null, "Campo CPF não pode estar vazio\n");
                     return;
                 }
                 if (isCpfExistente(cpf)) {
-                    Mensagens.erro(null, "CPF já cadastrado\n");
+                    MensagensController.erro(null, "CPF já cadastrado\n");
                     return;
                 }
 
                 if (!validaCpf(cpf)) {
-                    Mensagens.erro(null, "CPF inválido\n");
+                    MensagensController.erro(null, "CPF inválido\n");
                     return;
                 }
 
@@ -132,12 +132,12 @@ public class ManterCliente implements Tela {
                 cpf = cpf.replaceAll("[^0-9]", "");
 
                 if (cpf.equals("")) {
-                    Mensagens.aviso(null, "Insira um CPF para buscar\n");
+                    MensagensController.aviso(null, "Insira um CPF para buscar\n");
                     return;
                 }
 
                 if (!isCpfExistente(cpf)) {
-                    Mensagens.erro(null, "CPF não cadastrado\n");
+                    MensagensController.erro(null, "CPF não cadastrado\n");
                     return;
                 }
 
@@ -181,17 +181,17 @@ public class ManterCliente implements Tela {
                 areTextFieldsFilled(textFieldRG, "RG");
 
                 if (isInteger(numero)) {
-                    Mensagens.erro(null, "Número Inválido\n");
+                    MensagensController.erro(null, "Número Inválido\n");
                     return;
                 }
 
                 if (cpf.equals("")) {
-                    Mensagens.aviso(null, "CPF não pode ser vazio\n");
+                    MensagensController.aviso(null, "CPF não pode ser vazio\n");
                     return;
                 }
 
                 if (!validaCpf(cpf)) {
-                    Mensagens.erro(null, "CPF Inválido\n");
+                    MensagensController.erro(null, "CPF Inválido\n");
                     return;
                 }
 
@@ -207,7 +207,7 @@ public class ManterCliente implements Tela {
                     }
                 }
 
-                Mensagens.sucesso(null, "Informações editadas\n");
+                MensagensController.sucesso(null, "Informações editadas\n");
 
                 textFieldNome.setText("");
                 textFieldSobrenome.setText("");
@@ -233,7 +233,7 @@ public class ManterCliente implements Tela {
 
                 Sistema.getClientes().removeIf(cliente -> cliente.getCpf().equalsIgnoreCase(finalCpf));
 
-                Mensagens.sucesso(null, "CPF " + cpf + " removido\n");
+                MensagensController.sucesso(null, "CPF " + cpf + " removido\n");
 
                 textFieldNome.setText("");
                 textFieldSobrenome.setText("");
@@ -315,7 +315,7 @@ public class ManterCliente implements Tela {
      */
     public static boolean areTextFieldsFilled(JTextField textField, String campo) {
         if (textField.getText().trim().isEmpty()) {
-            Mensagens.aviso(null, "Campo " + campo + " está vazio\n");
+            MensagensController.aviso(null, "Campo " + campo + " está vazio\n");
             return false;
         }
         return true;
@@ -368,10 +368,6 @@ public class ManterCliente implements Tela {
      */
     public JPanel getFrame() {
         return frame;
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 
     {

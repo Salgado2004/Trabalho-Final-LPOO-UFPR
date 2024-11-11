@@ -1,16 +1,17 @@
 package br.ufpr.lpoo.controllers;
 
 import br.ufpr.lpoo.utils.Imagens;
+import br.ufpr.lpoo.views.dialog.ConfirmDialog;
+import br.ufpr.lpoo.views.dialog.MessageDialog;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
  * Classe que contém métodos para exibir mensagens de erro, aviso, sucesso e confirmação
- * Utiliza a classe JOptionPane para exibir as mensagens
- * @see JOptionPane
  */
-public class Mensagens {
+public class MensagensController {
+
+    private static boolean response;
 
     /**
      * Exibe uma mensagem de erro
@@ -18,7 +19,9 @@ public class Mensagens {
      * @param mensagem A mensagem a ser exibida
      */
     public static void erro(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Erro", JOptionPane.ERROR_MESSAGE, Imagens.ERRO.icon());
+        MessageDialog dialog = new MessageDialog();
+        dialog.initDialog(origin, mensagem, "Erro", Imagens.ERRO.icon());
+        dialog.open();
     }
 
     /**
@@ -27,7 +30,9 @@ public class Mensagens {
      * @param mensagem A mensagem a ser exibida
      */
     public static void aviso(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Aviso", JOptionPane.WARNING_MESSAGE, Imagens.WARNING.icon());
+        MessageDialog dialog = new MessageDialog();
+        dialog.initDialog(origin, mensagem, "Aviso", Imagens.WARNING.icon());
+        dialog.open();
     }
 
     /**
@@ -36,7 +41,9 @@ public class Mensagens {
      * @param mensagem A mensagem a ser exibida
      */
     public static void sucesso(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Sucesso", JOptionPane.INFORMATION_MESSAGE, Imagens.SUCCESS.icon());
+        MessageDialog dialog = new MessageDialog();
+        dialog.initDialog(origin, mensagem, "Sucesso", Imagens.SUCCESS.icon());
+        dialog.open();
     }
 
     /**
@@ -45,7 +52,9 @@ public class Mensagens {
      * @param mensagem A mensagem a ser exibida
      */
     public static void carregando(Component origin, String mensagem){
-        JOptionPane.showMessageDialog(origin, mensagem, "Carregando", JOptionPane.INFORMATION_MESSAGE, Imagens.LOADING.icon());
+        MessageDialog dialog = new MessageDialog();
+        dialog.initDialog(origin, mensagem, "Carregando...", Imagens.LOADING.icon());
+        dialog.open();
     }
 
     /**
@@ -55,6 +64,13 @@ public class Mensagens {
      * @return true se o usuário confirmar a ação, false caso contrário
      */
     public static boolean confirmar(Component origin, String mensagem){
-        return JOptionPane.showConfirmDialog(origin, mensagem, "Confirmação", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        ConfirmDialog dialog = new ConfirmDialog();
+        dialog.initDialog(origin, mensagem);
+        dialog.open();
+        return response;
+    }
+
+    public static void toogleResponse(boolean arg){
+        response = arg;
     }
 }

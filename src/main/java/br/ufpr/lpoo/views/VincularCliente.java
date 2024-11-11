@@ -132,15 +132,15 @@ public class VincularCliente implements Tela {
 
                 try {
                     factory.abrirConta(tipoConta.getSelectedItem().toString(), clienteSelecionado, validaCampos(campos));
-                    Mensagens.sucesso(frame, "Conta cadastrada com sucesso!");
+                    MensagensController.sucesso(frame, "Conta cadastrada com sucesso!");
                     formulario.setVisible(false);
                     tipoConta.setEnabled(false);
                     tabelaModel.fireTableDataChanged();
 
                 } catch (NumberFormatException ex) {
-                    Mensagens.erro(frame, ex.getMessage());
+                    MensagensController.erro(frame, ex.getMessage());
                 } catch (IllegalArgumentException ex) {
-                    Mensagens.aviso(frame, ex.getMessage());
+                    MensagensController.aviso(frame, ex.getMessage());
                 }
             }
         });
@@ -156,11 +156,11 @@ public class VincularCliente implements Tela {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (!Mensagens.confirmar(frame, "Tem certeza que deseja excluir a conta?")) return;
+                if (!MensagensController.confirmar(frame, "Tem certeza que deseja excluir a conta?")) return;
                 Sistema.getContas().remove(clienteSelecionado.getConta());
                 clienteSelecionado.setConta(null);
                 tabelaModel.fireTableDataChanged();
-                Mensagens.sucesso(frame, "Conta excluída com sucesso");
+                MensagensController.sucesso(frame, "Conta excluída com sucesso");
                 tipoConta.setSelectedIndex(0);
 
             }
