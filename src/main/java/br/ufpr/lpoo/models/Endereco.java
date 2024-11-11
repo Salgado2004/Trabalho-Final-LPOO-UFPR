@@ -5,6 +5,7 @@ package br.ufpr.lpoo.models;
  * Inclui informações como logradouro, bairro, número e cidade.
  */
 public class Endereco {
+    private int id;
     public String logradouro;
     public String bairro;
     public int numero;
@@ -27,6 +28,19 @@ public class Endereco {
         this.logradouro = logradouro.toUpperCase();
         this.bairro = bairro.toUpperCase();
         this.cidade = cidade.toUpperCase();
+    }
+
+    public Endereco(int id, String logradouro, String bairro, String numeroS, String cidade) {
+        this(logradouro, bairro, numeroS, cidade);
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLogradouro() {

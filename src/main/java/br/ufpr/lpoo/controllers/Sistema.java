@@ -1,14 +1,20 @@
 package br.ufpr.lpoo.controllers;
 
 import br.ufpr.lpoo.models.*;
+import br.ufpr.lpoo.models.connection.ClienteDao;
+import br.ufpr.lpoo.models.connection.DaoFactory;
+import br.ufpr.lpoo.models.connection.DaoType;
 import br.ufpr.lpoo.utils.Imagens;
 import br.ufpr.lpoo.views.Home;
 
+import javax.naming.OperationNotSupportedException;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import static br.ufpr.lpoo.models.connection.DaoType.MYSQL;
 
 /**
  * Classe que controla a navegação entre as telas e o cadastro de clientes e contas
@@ -19,6 +25,7 @@ public class Sistema {
     private static final Stack<Tela> navegacao = new Stack<>();
     static final List <Cliente> clientes = new ArrayList<>();
     static final List <Conta> contas = new ArrayList<>();
+    private static final DaoType type = MYSQL;
 
     /**
      * Método que seta o conteúdo do frame para a tela que está no topo da pilha de navegação
@@ -51,8 +58,9 @@ public class Sistema {
      * Método que cadastra um cliente na lista de clientes
      * @param cliente
      */
-    public static void cadastrarCliente(Cliente cliente){
-        clientes.add(cliente);
+    public static void cadastrarCliente(Cliente cliente) throws Exception {
+        ClienteDao clienteDao = DaoFactory.getClienteDao(type);
+        clienteDao.create(cliente);
     }
 
     /**
@@ -68,7 +76,38 @@ public class Sistema {
      * @return List<Cliente>
      */
     public static List<Cliente> getClientes(){
-        return clientes;
+        try {
+            ClienteDao clienteDao = DaoFactory.getClienteDao(type);
+            return clienteDao.readAll();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    /**
+     * Método que retorna a lista de clientes filtrada pela query
+     * @param query Um trecho do nome, sobrenome, ou CPF inteiro
+     * @return List<Cliente>
+     */
+    public static List<Cliente> getClientes(String query){
+        try {
+            ClienteDao clienteDao = DaoFactory.getClienteDao(type);
+            return clienteDao.search(query);
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public static void updateCliente(Cliente cliente) throws Exception {
+            ClienteDao clienteDao = DaoFactory.getClienteDao(type);
+            clienteDao.update(cliente);
+    }
+
+    public static void deleteCliente(Cliente cliente) throws Exception {
+        ClienteDao clienteDao = DaoFactory.getClienteDao(type);
+        clienteDao.delete(cliente);
     }
 
     /**
@@ -89,12 +128,11 @@ public class Sistema {
      * Define a operação padrão de fechamento da janela como EXIT_ON_CLOSE
      * Chama o método navigate()
      * Define a janela como visível
-     * Inicializa 3 clientes e os cadastra
      */
     public static void main(String[] args){
         Home home = new Home();
         navegacao.push(home);
-        Dimension dimension = new Dimension(700,500);
+        Dimension dimension = new Dimension(800,550);
         Image image = Imagens.MAIN.image();
         frame.setIconImage(image);
         frame.setMinimumSize(dimension);
@@ -103,18 +141,6 @@ public class Sistema {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         navigate();
         frame.setVisible(true);
-
-        Endereco endereco1 = new Endereco("Rua A", "Prado Velho", "250", "Curitiba");
-        Cliente c1 = new Cliente("Pedro", "Souza", endereco1, "948.312.270-80", "129711280");
-        cadastrarCliente(c1);
-
-        Endereco endereco2 = new Endereco("Rua B", "Cajuru", "1134", "Curitiba");
-        Cliente c2 = new Cliente("Alisson", "Santos", endereco2, "885.434.710-87", "119264210");
-        cadastrarCliente(c2);
-
-        Endereco endereco3 = new Endereco("Rua C", "Jardim Amélia", "65", "Pinhais");
-        Cliente c3 = new Cliente("Leonardo", "Salgado", endereco3, "632.872.080-71", "129321481");
-        cadastrarCliente(c3);
     }
 
 }

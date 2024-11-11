@@ -25,7 +25,7 @@ public class Cliente {
     public Cliente(String nome, String sobrenome, Endereco endereco, String cpf, String rg) {
         cpf = cpf.replaceAll("[^0-9]", "");
         if (!validaCpf(cpf)) {
-            throw new IllegalArgumentException("CPF inválido");
+            throw new IllegalArgumentException("CPF inválido: "+cpf);
         }
         setNome(nome);
         setSobrenome(sobrenome);
