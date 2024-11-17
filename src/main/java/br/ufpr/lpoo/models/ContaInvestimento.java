@@ -12,23 +12,6 @@ public class ContaInvestimento extends Conta {
     /**
      * Construtor para a classe ContaInvestimento.
      * Define os valores iniciais para as variáveis de instância.
-     *
-     * @param numero          O número da conta.
-     * @param dono            O proprietário da conta.
-     * @param saldo           O saldo inicial da conta.
-     * @param depositoMinimo  O depósito mínimo da conta.
-     * @param montanteMinimo  O montante mínimo da conta.
-     */
-    public ContaInvestimento(int numero, Cliente dono, double saldo, double depositoMinimo, double montanteMinimo) {
-        super(numero, dono, saldo);
-        this.depositoInicial = saldo;
-        this.depositoMinimo = depositoMinimo;
-        this.montanteMinimo = montanteMinimo;
-    }
-
-    /**
-     * Construtor para a classe ContaInvestimento.
-     * Define os valores iniciais para as variáveis de instância.
      * O número da conta é incrementado automaticamente.
      *
      * @param dono            O proprietário da conta.
@@ -38,7 +21,32 @@ public class ContaInvestimento extends Conta {
      */
     public ContaInvestimento(Cliente dono, double saldo, double depositoMinimo, double montanteMinimo) {
         super(dono, saldo);
+        if (depositoMinimo <= 0 || montanteMinimo <= 0) {
+            throw new IllegalArgumentException("Depósito mínimo e montante mínimo devem ser maiores que 0.");
+        }
+        if (saldo < depositoMinimo) {
+            throw new IllegalArgumentException("Saldo inicial menor que o depósito mínimo.");
+        }
+        if (saldo < montanteMinimo) {
+            throw new IllegalArgumentException("Saldo inicial menor que o montante mínimo.");
+        }
         this.depositoInicial = saldo;
+        this.depositoMinimo = depositoMinimo;
+        this.montanteMinimo = montanteMinimo;
+    }
+
+    public ContaInvestimento(Cliente dono, double saldo, double depositoMinimo, double montanteMinimo, double depositoInicial) {
+        super(dono, saldo);
+        if (depositoMinimo <= 0 || montanteMinimo <= 0) {
+            throw new IllegalArgumentException("Depósito mínimo e montante mínimo devem ser maiores que 0.");
+        }
+        if (saldo < depositoMinimo) {
+            throw new IllegalArgumentException("Saldo inicial menor que o depósito mínimo.");
+        }
+        if (saldo < montanteMinimo) {
+            throw new IllegalArgumentException("Saldo inicial menor que o montante mínimo.");
+        }
+        this.depositoInicial = depositoInicial;
         this.depositoMinimo = depositoMinimo;
         this.montanteMinimo = montanteMinimo;
     }

@@ -1,4 +1,4 @@
-package br.ufpr.lpoo.controllers;
+package br.ufpr.lpoo.utils;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;

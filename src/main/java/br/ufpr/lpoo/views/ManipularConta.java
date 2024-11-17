@@ -1,8 +1,10 @@
 package br.ufpr.lpoo.views;
 
+import br.ufpr.lpoo.Sistema;
 import br.ufpr.lpoo.controllers.*;
 import br.ufpr.lpoo.models.*;
-import br.ufpr.lpoo.services.Observer;
+import br.ufpr.lpoo.models.connection.DaoType;
+import br.ufpr.lpoo.utils.Imagens;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -10,8 +12,8 @@ import com.intellij.uiDesigner.core.Spacer;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
+
+import static br.ufpr.lpoo.models.connection.DaoType.MYSQL;
 
 /**
  * Classe que representa a tela de manipulação de conta
@@ -19,9 +21,10 @@ import java.beans.PropertyChangeEvent;
  *
  * @see Tela
  */
-public class ManipularConta implements Tela, Observer {
+public class ManipularConta implements Tela {
     private Conta conta;
     private JPanel frame;
+    private ManipularContaController controller;
     private JButton voltarButton;
     private JTextField cpfCliente;
     private JPanel dadosConta;
@@ -42,6 +45,7 @@ public class ManipularConta implements Tela, Observer {
     private JLabel rendimento;
     private JLabel numeroConta;
     private JLabel warningLimite;
+    private static final DaoType type = MYSQL;
 
     /**
      * Construtor da classe ManipularConta
@@ -49,73 +53,63 @@ public class ManipularConta implements Tela, Observer {
      * Adiciona os listeners aos botões
      */
     public ManipularConta() {
-        this.initUIComponents();
+        controller = new ManipularContaController(this);
+    }
 
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Sistema.goBack();
-            }
-        });
-        mostrarSaldo.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                saldo.setVisible(mostrarSaldo.isSelected());
-            }
-        });
-        buscarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!cpfCliente.getText().isEmpty()) {
-                    String cpf = cpfCliente.getText();
-                    conta = pesquisaContaPorCliente(cpf);
-                    if (conta != null) {
-                        loadConta();
-                        dadosConta.setVisible(true);
-                    }
-                }
-            }
-        });
-        saqueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    double valor = Double.parseDouble(valorSaque.getText());
-                    if (conta.saca(valor)) {
-                        Mensagens.sucesso(dadosConta, "Saque realizado com sucesso");
-                    } else {
-                        Mensagens.aviso(dadosConta, conta.getClass() == ContaCorrente.class ? "Saldo/limite insuficiente" : "O valor restante é inferior ao montante mínimo");
-                    }
-                } catch (NumberFormatException ex) {
-                    Mensagens.erro(dadosConta, "Valor inserido inválido");
+    public void setController() {
+        voltarButton.addActionListener(e -> Sistema.goBack());
 
-                }
-            }
-        });
-        depositoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        buscarButton.addActionListener(e -> {
+            if (cpfCliente.getText().isEmpty()) {
+                MensagensController.aviso(dadosConta, "Digite um CPF para buscar");
+            } else {
+                String cpf = cpfCliente.getText();
                 try {
-                    double valor = Double.parseDouble(valorDeposito.getText());
-                    if (conta.deposita(valor)) {
-                        Mensagens.sucesso(dadosConta, "Depósito realizado com sucesso");
-                    } else {
-                        Mensagens.aviso(dadosConta, "Depósito mínimo não atingido");
-                    }
-                } catch (NumberFormatException ex) {
-                    Mensagens.erro(dadosConta, "Valor inserido inválido");
+                    this.controller.buscarConta(cpf);
+                } catch (Exception ex) {
+                    MensagensController.aviso(dadosConta, ex.getMessage());
                 }
             }
         });
-        investirButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (conta.getSaldo() > 0) {
-                    conta.remunera();
-                    Mensagens.sucesso(dadosConta, "Investimento realizado com sucesso");
-                } else {
-                    Mensagens.aviso(dadosConta, "Saldo insuficiente para investir");
-                }
+
+        mostrarSaldo.addItemListener(e -> saldo.setVisible(mostrarSaldo.isSelected()));
+
+        saqueButton.addActionListener(e -> {
+            try {
+                double valor = Double.parseDouble(valorSaque.getText());
+                this.controller.realizaSaque(valor);
+                MensagensController.sucesso(dadosConta, "Saque realizado com sucesso");
+            } catch (NumberFormatException ex) {
+                MensagensController.erro(dadosConta, "Valor inserido inválido");
+            } catch (IllegalArgumentException ex) {
+                MensagensController.aviso(dadosConta, ex.getMessage());
+            } catch (Exception ex) {
+                MensagensController.erro(dadosConta, "Erro ao realizar saque: " + ex.getMessage());
+            }
+        });
+
+        depositoButton.addActionListener(e -> {
+            try {
+                double valor = Double.parseDouble(valorDeposito.getText());
+                this.controller.realizaDeposito(valor);
+                MensagensController.sucesso(dadosConta, "Depósito realizado com sucesso");
+            } catch (NumberFormatException ex) {
+                MensagensController.erro(dadosConta, "Valor inserido inválido");
+            } catch (IllegalArgumentException ex) {
+                MensagensController.aviso(dadosConta, ex.getMessage());
+            } catch (Exception ex) {
+                MensagensController.erro(dadosConta, "Erro ao realizar depósito: " + ex.getMessage());
+            }
+        });
+
+        investirButton.addActionListener(e -> {
+            try {
+                this.controller.realizaInvestimento();
+                MensagensController.sucesso(dadosConta, "Investimento realizado com sucesso");
+            } catch (IllegalArgumentException ex) {
+                MensagensController.aviso(dadosConta, ex.getMessage());
+            } catch (RuntimeException ex) {
+                MensagensController.erro(dadosConta, ex.getMessage());
             }
         });
     }
@@ -128,30 +122,16 @@ public class ManipularConta implements Tela, Observer {
      */
     public ManipularConta(Cliente cliente) {
         this();
-        conta = cliente.getConta();
         cpfCliente.setText(cliente.getCpf());
-        loadConta();
-        dadosConta.setVisible(true);
-    }
-
-    private Conta pesquisaContaPorCliente(String cpfCliente) {
-        cpfCliente = cpfCliente.replaceAll("[^0-9]", "");
-        for (Cliente c : Sistema.getClientes()) {
-            if (c.getCpf().equals(cpfCliente)) {
-                if (c.getConta() != null) {
-                    return c.getConta();
-                } else {
-                    Mensagens.aviso(dadosConta, "O cliente pesquisado não possui uma conta");
-                    return null;
-                }
-            }
+        try {
+            this.controller.buscarConta(cliente.getCpf());
+        } catch (Exception e) {
+            MensagensController.aviso(dadosConta, e.getMessage());
         }
-        Mensagens.aviso(dadosConta, "Esse cliente não foi encontrado");
-        return null;
     }
 
-    private void loadConta() {
-        Mensagens.carregando(dadosConta, "Carregando dados da conta...");
+    public void loadConta(Conta conta) {
+        MensagensController.carregando(dadosConta, "Carregando dados da conta...");
         saldo.setText("R$ " + String.format("%.2f", conta.getSaldo()).replace(".", ","));
         numeroConta.setText("Conta Nº: " + String.format("%6d", conta.getNumero()));
         warningLimite.setVisible(conta.getSaldo() < 0);
@@ -162,7 +142,12 @@ public class ManipularConta implements Tela, Observer {
             tipoConta.setText("Sua conta é do tipo: Conta de Investimento");
             rendimento.setText("Seu rendimento é de: 2% do montante total");
         }
-        conta.addObserver(this);
+        dadosConta.setVisible(true);
+    }
+
+    public void updateSaldo(double newSaldo) {
+        saldo.setText("R$ " + String.format("%.2f", newSaldo).replace(".", ","));
+        warningLimite.setVisible(newSaldo < 0);
     }
 
     /**
@@ -184,20 +169,6 @@ public class ManipularConta implements Tela, Observer {
         tabbedPane1.setIconAt(1, Imagens.DEPOSITO.icon());
         tabbedPane1.setIconAt(2, Imagens.REMUNERA.icon());
         investirButton.setIcon(Imagens.INVESTIMENTO.icon());
-    }
-
-    /**
-     * Método que atualiza o saldo da conta
-     *
-     * @param evt Evento de mudança de propriedade
-     * @see Observer
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("saldo")) {
-            saldo.setText("R$ " + String.format("%.2f", conta.getSaldo()).replace(".", ","));
-            warningLimite.setVisible(conta.getSaldo() < 0);
-        }
     }
 
     {
@@ -355,4 +326,5 @@ public class ManipularConta implements Tela, Observer {
     public JComponent $$$getRootComponent$$$() {
         return frame;
     }
+
 }

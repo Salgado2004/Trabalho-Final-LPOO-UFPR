@@ -22,11 +22,11 @@ INSERT INTO cliente (cpf, nome, sobrenome, rg, idEndereco) VALUES
 ('31057053090', 'Raul', 'Bana', '130632776', 3),
 ('12345678909', 'Maria', 'Silva', '123456789', 4),
 ('98765432100', 'João', 'Pereira', '987654321', 5),
-('11122233344', 'Ana', 'Costa', '111222333', 6),
-('55566677788', 'Carlos', 'Oliveira', '555666777', 7),
-('99988877766', 'Fernanda', 'Almeida', '999888777', 8),
-('44455566677', 'Paulo', 'Souza', '444555666', 9),
-('22233344455', 'Juliana', 'Mendes', '222333444', 10);
+('69429562010', 'Ana', 'Costa', '111222333', 6),
+('45940918069', 'Carlos', 'Oliveira', '555666777', 7),
+('38547351035', 'Fernanda', 'Almeida', '999888777', 8),
+('90692230076', 'Paulo', 'Souza', '444555666', 9),
+('82623549079', 'Juliana', 'Mendes', '222333444', 10);
 
 INSERT INTO conta (cpfCliente, saldo) VALUES
 ('94831227080', 1000.00),
@@ -45,3 +45,10 @@ INSERT INTO contaInvestimento (numeroConta, depositoInicial, depositoMinimo, mon
 (4, 2000.00, 1000.00, 2000.00),
 (5, 2500.00, 1500.00, 2500.00),
 (6, 3000.00, 2000.00, 3000.00);
+
+UPDATE cliente SET numeroConta = 1 WHERE cpf = '94831227080';
+UPDATE cliente SET numeroConta = 2 WHERE cpf = '88543471087';
+UPDATE cliente SET numeroConta = 3 WHERE cpf = '63287208071';
+UPDATE cliente SET numeroConta = 4 WHERE cpf = '31057053090';
+UPDATE cliente SET numeroConta = 5 WHERE cpf = '12345678909';
+UPDATE cliente SET numeroConta = 6 WHERE cpf = '98765432100';

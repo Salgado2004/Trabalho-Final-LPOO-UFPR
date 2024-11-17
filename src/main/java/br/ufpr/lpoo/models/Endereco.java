@@ -1,10 +1,13 @@
 package br.ufpr.lpoo.models;
 
+import java.util.Objects;
+
 /**
  * Esta classe representa um Endereço no sistema.
  * Inclui informações como logradouro, bairro, número e cidade.
  */
 public class Endereco {
+    private int id;
     public String logradouro;
     public String bairro;
     public int numero;
@@ -27,6 +30,19 @@ public class Endereco {
         this.logradouro = logradouro.toUpperCase();
         this.bairro = bairro.toUpperCase();
         this.cidade = cidade.toUpperCase();
+    }
+
+    public Endereco(int id, String logradouro, String bairro, String numeroS, String cidade) {
+        this(logradouro, bairro, numeroS, cidade);
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLogradouro() {
@@ -59,5 +75,18 @@ public class Endereco {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Endereco endereco = (Endereco) o;
+        return id == endereco.id && numero == endereco.numero && Objects.equals(logradouro, endereco.logradouro) && Objects.equals(bairro, endereco.bairro) && Objects.equals(cidade, endereco.cidade);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, logradouro, bairro, numero, cidade);
     }
 }
