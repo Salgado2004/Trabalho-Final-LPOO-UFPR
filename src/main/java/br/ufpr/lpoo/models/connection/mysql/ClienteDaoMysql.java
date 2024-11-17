@@ -85,25 +85,30 @@ public class ClienteDaoMysql implements ClienteDao {
     public void create(Cliente cliente) throws Exception {
         try (Connection con = ConnectionFactory.getConnection()) {
             con.setAutoCommit(false);
-            PreparedStatement sql = con.prepareStatement("INSERT INTO endereco (logradouro, bairro, numero, cidade) VALUES (?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            sql.setString(1, cliente.getEndereco().getLogradouro());
-            sql.setString(2, cliente.getEndereco().getBairro());
-            sql.setInt(3, cliente.getEndereco().getNumero());
-            sql.setString(4, cliente.getEndereco().getCidade());
-            sql.executeUpdate();
-            ResultSet rs = sql.getGeneratedKeys();
-            if (rs.next()) {
-                cliente.getEndereco().setId(rs.getInt(1));
-            } else {
-                throw new RuntimeException("Erro na criação de endereço");
+
+            try (PreparedStatement sql = con.prepareStatement("INSERT INTO endereco (logradouro, bairro, numero, cidade) VALUES (?,?,?,?);", Statement.RETURN_GENERATED_KEYS)) {
+                sql.setString(1, cliente.getEndereco().getLogradouro());
+                sql.setString(2, cliente.getEndereco().getBairro());
+                sql.setInt(3, cliente.getEndereco().getNumero());
+                sql.setString(4, cliente.getEndereco().getCidade());
+                sql.executeUpdate();
+                ResultSet rs = sql.getGeneratedKeys();
+                if (rs.next()) {
+                    cliente.getEndereco().setId(rs.getInt(1));
+                } else {
+                    throw new RuntimeException("Erro na criação de endereço");
+                }
             }
-            sql = con.prepareStatement("INSERT INTO cliente (cpf, nome, sobrenome, rg, idEndereco) VALUES (?,?,?,?,?);");
-            sql.setString(1, cliente.getCpf());
-            sql.setString(2, cliente.getNome());
-            sql.setString(3, cliente.getSobrenome());
-            sql.setString(4, cliente.getRg());
-            sql.setInt(5, cliente.getEndereco().getId());
-            sql.executeUpdate();
+
+            try (PreparedStatement sql = con.prepareStatement("INSERT INTO cliente (cpf, nome, sobrenome, rg, idEndereco) VALUES (?,?,?,?,?);");) {
+                sql.setString(1, cliente.getCpf());
+                sql.setString(2, cliente.getNome());
+                sql.setString(3, cliente.getSobrenome());
+                sql.setString(4, cliente.getRg());
+                sql.setInt(5, cliente.getEndereco().getId());
+                sql.executeUpdate();
+            }
+            
             con.commit();
         }
     }
