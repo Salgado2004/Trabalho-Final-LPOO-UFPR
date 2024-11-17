@@ -35,6 +35,22 @@ public class ContaInvestimento extends Conta {
         this.montanteMinimo = montanteMinimo;
     }
 
+    public ContaInvestimento(Cliente dono, double saldo, double depositoMinimo, double montanteMinimo, double depositoInicial) {
+        super(dono, saldo);
+        if (depositoMinimo <= 0 || montanteMinimo <= 0) {
+            throw new IllegalArgumentException("Depósito mínimo e montante mínimo devem ser maiores que 0.");
+        }
+        if (saldo < depositoMinimo) {
+            throw new IllegalArgumentException("Saldo inicial menor que o depósito mínimo.");
+        }
+        if (saldo < montanteMinimo) {
+            throw new IllegalArgumentException("Saldo inicial menor que o montante mínimo.");
+        }
+        this.depositoInicial = depositoInicial;
+        this.depositoMinimo = depositoMinimo;
+        this.montanteMinimo = montanteMinimo;
+    }
+
     /**
      * Este método deposita um valor na conta.
      * Verifica se o valor é maior ou igual ao depósito mínimo antes de depositar.
