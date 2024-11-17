@@ -62,7 +62,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <mainClass>br.ufpr.lpoo.controllers.Sistema</mainClass>
+                    <mainClass>br.ufpr.lpoo.Sistema</mainClass>
                 </configuration>
             </plugin>
 
@@ -82,7 +82,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>br.ufpr.lpoo.controllers.Sistema</mainClass>
+                            <mainClass>br.ufpr.lpoo.Sistema</mainClass>
                         </manifest>
                     </archive>
                     <appendAssemblyId>false</appendAssemblyId>
