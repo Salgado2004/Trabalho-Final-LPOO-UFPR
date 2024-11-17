@@ -1,7 +1,7 @@
 package br.ufpr.lpoo.views;
 
 import br.ufpr.lpoo.utils.Imagens;
-import br.ufpr.lpoo.controllers.Sistema;
+import br.ufpr.lpoo.Sistema;
 import br.ufpr.lpoo.models.Tela;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -9,8 +9,6 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Esta classe representa a tela inicial do sistema.
@@ -28,44 +26,19 @@ public class Home implements Tela {
      * Define os valores iniciais para as variáveis de instância e adiciona os ouvintes de ação aos botões.
      */
     public Home() {
-        clientesButton.addActionListener(new ActionListener() {
-            /**
-             * Este método é chamado quando o botão Clientes é clicado.
-             * Ele navega para a tela ManterCliente.
-             *
-             * @param e O evento de ação.
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ManterCliente frame = new ManterCliente();
-                Sistema.navigate(frame);
-            }
+        clientesButton.addActionListener(e -> {
+            ManterCliente frame = new ManterCliente();
+            Sistema.navigate(frame);
         });
-        contasButton.addActionListener(new ActionListener() {
-            /**
-             * Este método é chamado quando o botão Contas é clicado.
-             * Ele navega para a tela VincularCliente.
-             *
-             * @param e O evento de ação.
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                VincularCliente frame = new VincularCliente();
-                Sistema.navigate(frame);
-            }
+
+        contasButton.addActionListener(e -> {
+            VincularCliente frame = new VincularCliente();
+            Sistema.navigate(frame);
         });
-        transactionsButton.addActionListener(new ActionListener() {
-            /**
-             * Este método é chamado quando o botão Transações é clicado.
-             * Ele navega para a tela ManipularConta.
-             *
-             * @param e O evento de ação.
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ManipularConta frame = new ManipularConta();
-                Sistema.navigate(frame);
-            }
+
+        transactionsButton.addActionListener(e -> {
+            ManipularConta frame = new ManipularConta();
+            Sistema.navigate(frame);
         });
         this.initUIComponents();
     }
