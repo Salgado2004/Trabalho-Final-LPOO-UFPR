@@ -1,6 +1,6 @@
 package br.ufpr.lpoo.models.connection;
 
-import br.ufpr.lpoo.models.connection.mysql.ClienteDaoMysql;
+import br.ufpr.lpoo.models.connection.mysql.*;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -18,23 +18,15 @@ public class DaoFactory {
 
     public static EnderecoDao getEnderecoDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> null;//new EnderecoDaoMysql();
+            case MYSQL -> new EnderecoDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };
     }
 
-    public static ContaCorrenteDao getContaCorrenteDao(DaoType type) throws OperationNotSupportedException {
+    public static ContaDao getContaDao(DaoType type) throws OperationNotSupportedException {
         return switch (type) {
-            case MYSQL -> null;//new ContaCorrenteDaoMysql();
-            case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
-            case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
-        };
-    }
-
-    public static ContaInvestimentoDao getContaInvestimentoDao(DaoType type) throws OperationNotSupportedException {
-        return switch (type) {
-            case MYSQL -> null;//new ContaInvestimentoDaoMysql();
+            case MYSQL -> new ContaDaoMysql();
             case POSTGRES -> throw new OperationNotSupportedException("Postgres not implemented");
             case IN_MEMORY -> throw new OperationNotSupportedException("In memory not implemented");
         };

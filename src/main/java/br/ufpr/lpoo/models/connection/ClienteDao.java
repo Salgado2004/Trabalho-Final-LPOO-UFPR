@@ -7,4 +7,6 @@ import java.util.List;
 public interface ClienteDao extends Dao<Cliente>{
     Cliente getByCpf(String cpf);
     List<Cliente> search(String query) throws Exception;
+    void addConta(Cliente cliente) throws Exception;
+    void removeConta(Cliente cliente) throws Exception;
 }
