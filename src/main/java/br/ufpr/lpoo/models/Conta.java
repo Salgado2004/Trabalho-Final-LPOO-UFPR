@@ -1,6 +1,6 @@
 package br.ufpr.lpoo.models;
 
-import br.ufpr.lpoo.services.Observer;
+import br.ufpr.lpoo.utils.Observer;
 
 import java.beans.PropertyChangeSupport;
 
@@ -10,7 +10,6 @@ import java.beans.PropertyChangeSupport;
  * Implementa a interface ContaI.
  */
 public abstract class Conta implements ContaI {
-    private static int contador = 0;
     protected int numero;
     protected Cliente dono;
     protected double saldo;
@@ -25,6 +24,9 @@ public abstract class Conta implements ContaI {
      * @param saldo  O saldo inicial da conta.
      */
     public Conta(int numero, Cliente dono, double saldo) {
+        if (saldo < 0) {
+            throw new IllegalArgumentException("O saldo deve ser maior que 0.");
+        }
         this.numero = numero;
         this.dono = dono;
         this.saldo = saldo;
@@ -39,9 +41,7 @@ public abstract class Conta implements ContaI {
      * @param saldo O saldo inicial da conta.
      */
     public Conta(Cliente dono, double saldo) {
-        this.numero = ++contador;
-        this.dono = dono;
-        this.saldo = saldo;
+        this(-1, dono, saldo);
     }
 
     /**
@@ -91,6 +91,10 @@ public abstract class Conta implements ContaI {
 
     public int getNumero() {
         return this.numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     public double getSaldo() {

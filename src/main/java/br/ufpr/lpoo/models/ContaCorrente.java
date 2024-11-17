@@ -11,21 +11,6 @@ public class ContaCorrente extends Conta {
     /**
      * Construtor para a classe ContaCorrente.
      * Define os valores iniciais para as variáveis de instância.
-     *
-     * @param numero          O número da conta.
-     * @param dono            O proprietário da conta.
-     * @param saldo           O saldo inicial da conta.
-     * @param limite          O limite da conta.
-     */
-    public ContaCorrente(int numero, Cliente dono, double saldo, double limite) {
-        super(numero, dono, saldo);
-        this.depositoInicial = saldo;
-        this.limite = limite;
-    }
-
-    /**
-     * Construtor para a classe ContaCorrente.
-     * Define os valores iniciais para as variáveis de instância.
      * O número da conta é incrementado automaticamente.
      *
      * @param dono            O proprietário da conta.
@@ -34,7 +19,19 @@ public class ContaCorrente extends Conta {
      */
     public ContaCorrente(Cliente dono, double saldo, double limite) {
         super(dono, saldo);
+        if (limite < 0) {
+            throw new IllegalArgumentException("Limite deve ser maior ou igual a 0.");
+        }
         this.depositoInicial = saldo;
+        this.limite = limite;
+    }
+
+    public ContaCorrente(Cliente dono, double saldo, double limite, double depositoInicial) {
+        super(dono, saldo);
+        if (limite < 0) {
+            throw new IllegalArgumentException("Limite deve ser maior ou igual a 0.");
+        }
+        this.depositoInicial = depositoInicial;
         this.limite = limite;
     }
 
