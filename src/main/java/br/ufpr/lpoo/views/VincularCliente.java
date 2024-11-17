@@ -1,11 +1,8 @@
 package br.ufpr.lpoo.views;
 
+import br.ufpr.lpoo.Sistema;
 import br.ufpr.lpoo.controllers.*;
-import br.ufpr.lpoo.models.Cliente;
-import br.ufpr.lpoo.models.ContaCorrente;
-import br.ufpr.lpoo.models.ContaInvestimento;
-import br.ufpr.lpoo.models.Tela;
-import br.ufpr.lpoo.utils.FactoryConta;
+import br.ufpr.lpoo.models.*;
 import br.ufpr.lpoo.utils.Imagens;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -13,8 +10,6 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 
 /**
@@ -23,6 +18,7 @@ import java.util.*;
  */
 public class VincularCliente implements Tela {
     private JPanel frame;
+    private final VincularClienteController controller;
     private JButton voltarButton;
     private JComboBox tipoConta;
     private JTextField depositoInicial;
@@ -36,8 +32,6 @@ public class VincularCliente implements Tela {
     private JPanel formulario;
     private JButton gerenciarContaButton;
     private JButton excluirButton;
-    private VincularTableModel tabelaModel = new VincularTableModel(Sistema.getClientes());
-    private Cliente clienteSelecionado;
     private ContaCorrente corrente;
     private ContaInvestimento investimento;
     private JScrollPane scrollPanel;
@@ -47,124 +41,108 @@ public class VincularCliente implements Tela {
      * Inicializa os componentes da interface e define os listeners dos botões.
      */
     public VincularCliente() {
-        this.initUIComponents();
+        controller = new VincularClienteController(this);
+    }
 
+    public void setController(VincularTableModel tabelaModel) {
         tabela.setModel(tabelaModel);
-        tabela.setColumnModel(tabela.getColumnModel());
 
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Sistema.goBack();
-            }
-        });
+        voltarButton.addActionListener(e -> Sistema.goBack());
 
-        tipoConta.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                label1.setText("Depósito Inicial:");
+        tipoConta.addActionListener(e -> this.controller.selectTipo((String) tipoConta.getSelectedItem()));
 
-                switch (Objects.requireNonNull(tipoConta.getSelectedItem()).toString()) {
-                    case "Conta Corrente":
-                        formulario.setVisible(true);
-                        label2.setText("Limite:");
-                        label3.setVisible(false);
-                        textField3.setVisible(false);
-                        break;
-                    case "Conta Investimento":
-                        formulario.setVisible(true);
-                        label3.setVisible(true);
-                        textField3.setVisible(true);
-                        label2.setText("Montante Mínimo:");
-                        label3.setText("Depósito Mínimo:");
-                        break;
-                    default:
-                        formulario.setVisible(false);
-                        break;
-                }
-            }
-        });
+        tabela.getSelectionModel().addListSelectionListener(e -> controller.selectCliente(tabela.getSelectedRow()));
 
-
-        tabela.getSelectionModel().addListSelectionListener(e -> {
-            if (tabela.getSelectedRow() != -1) {
-                clienteSelecionado = Sistema.getClientes().get(tabela.getSelectedRow());
-                tipoConta.setEnabled(false);
-                excluirButton.setVisible(true);
-                gerenciarContaButton.setVisible(true);
-                salvarButton.setVisible(false);
-                switch (clienteSelecionado.getConta() != null ? clienteSelecionado.getConta().getClass().getSimpleName() : "") {
-                    case "ContaCorrente":
-                        tipoConta.setSelectedItem("Conta Corrente");
-                        corrente = (ContaCorrente) clienteSelecionado.getConta();
-                        depositoInicial.setText(String.valueOf(corrente.getDepositoInicial()));
-                        textField2.setText(String.valueOf(corrente.getLimite()));
-                        break;
-                    case "ContaInvestimento":
-                        tipoConta.setSelectedItem("Conta Investimento");
-                        investimento = (ContaInvestimento) clienteSelecionado.getConta();
-                        depositoInicial.setText(String.valueOf(investimento.getDepositoInicial()));
-                        textField2.setText(String.valueOf(investimento.getMontanteMinimo()));
-                        textField3.setText(String.valueOf(investimento.getDepositoMinimo()));
-                        break;
-                    default:
-                        tipoConta.setSelectedItem("");
-                        depositoInicial.setText("");
-                        textField2.setText("");
-                        textField3.setText("");
-                        excluirButton.setVisible(false);
-                        gerenciarContaButton.setVisible(false);
-                        salvarButton.setVisible(true);
-                        tipoConta.setEnabled(true);
-                        break;
-                }
-            }
-        });
-
-
-        salvarButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                FactoryConta factory = new FactoryConta();
+        salvarButton.addActionListener(e -> {
+            try {
                 ArrayList<JTextField> campos = new ArrayList<>(Arrays.asList(depositoInicial, textField2, textField3));
+                controller.abrirConta(controller.validaCampos(campos));
 
+                MensagensController.sucesso(frame, "Conta cadastrada com sucesso!");
+
+                formulario.setVisible(false);
+                tipoConta.setEnabled(false);
+
+            } catch (IllegalArgumentException ex) {
+                MensagensController.aviso(frame, ex.getMessage());
+            } catch (Exception ex) {
+                MensagensController.erro(frame, ex.getMessage());
+            }
+        });
+
+        excluirButton.addActionListener(e -> {
+            if (MensagensController.confirmar(frame, "Tem certeza que deseja excluir a conta?")) {
                 try {
-                    factory.abrirConta(tipoConta.getSelectedItem().toString(), clienteSelecionado, validaCampos(campos));
-                    MensagensController.sucesso(frame, "Conta cadastrada com sucesso!");
-                    formulario.setVisible(false);
-                    tipoConta.setEnabled(false);
-                    tabelaModel.fireTableDataChanged();
+                    this.controller.deleteConta();
 
-                } catch (NumberFormatException ex) {
+                    tipoConta.setSelectedIndex(0);
+                    MensagensController.sucesso(frame, "Conta excluída com sucesso");
+                } catch (Exception ex) {
                     MensagensController.erro(frame, ex.getMessage());
-                } catch (IllegalArgumentException ex) {
-                    MensagensController.aviso(frame, ex.getMessage());
                 }
             }
         });
 
-        gerenciarContaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Sistema.navigate(new ManipularConta(clienteSelecionado));
-            }
-        });
+        gerenciarContaButton.addActionListener(e -> Sistema.navigate(new ManipularConta(this.controller.getClienteSelecionado())));
+    }
 
-        excluirButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+    public void switchForms(Conta conta) {
+        tipoConta.setEnabled(false);
+        excluirButton.setVisible(true);
+        gerenciarContaButton.setVisible(true);
+        salvarButton.setVisible(false);
+        if (conta == null) {
+            tipoConta.setSelectedItem("");
+            depositoInicial.setText("");
+            textField2.setText("");
+            textField3.setText("");
+            excluirButton.setVisible(false);
+            gerenciarContaButton.setVisible(false);
+            salvarButton.setVisible(true);
+            tipoConta.setEnabled(true);
+        } else {
+            loadFormGerenciamento(conta);
+        }
+    }
 
-                if (!MensagensController.confirmar(frame, "Tem certeza que deseja excluir a conta?")) return;
-                Sistema.getContas().remove(clienteSelecionado.getConta());
-                clienteSelecionado.setConta(null);
-                tabelaModel.fireTableDataChanged();
-                MensagensController.sucesso(frame, "Conta excluída com sucesso");
-                tipoConta.setSelectedIndex(0);
+    public void loadFormAbertura(String tipo) {
+        label1.setText("Depósito Inicial:");
+        switch (tipo) {
+            case "Conta Corrente":
+                formulario.setVisible(true);
+                label2.setText("Limite:");
+                label3.setVisible(false);
+                textField3.setVisible(false);
+                break;
+            case "Conta Investimento":
+                formulario.setVisible(true);
+                label3.setVisible(true);
+                textField3.setVisible(true);
+                label2.setText("Montante Mínimo:");
+                label3.setText("Depósito Mínimo:");
+                break;
+            default:
+                formulario.setVisible(false);
+                break;
+        }
+    }
 
-            }
-        });
+    public void loadFormGerenciamento(Conta conta) {
+        switch (conta.getClass().getSimpleName()) {
+            case "ContaCorrente":
+                tipoConta.setSelectedItem("Conta Corrente");
+                corrente = (ContaCorrente) conta;
+                depositoInicial.setText(String.valueOf(corrente.getDepositoInicial()));
+                textField2.setText(String.valueOf(corrente.getLimite()));
+                break;
+            case "ContaInvestimento":
+                tipoConta.setSelectedItem("Conta Investimento");
+                investimento = (ContaInvestimento) conta;
+                depositoInicial.setText(String.valueOf(investimento.getDepositoInicial()));
+                textField2.setText(String.valueOf(investimento.getMontanteMinimo()));
+                textField3.setText(String.valueOf(investimento.getDepositoMinimo()));
+                break;
+        }
     }
 
     /**
@@ -182,30 +160,6 @@ public class VincularCliente implements Tela {
         gerenciarContaButton.setIcon(Imagens.DEPOSITO.icon());
         scrollPanel.getViewport().setBackground(new Color(5, 28, 59));
         tabela.getTableHeader().setBackground(new Color(225, 248, 255));
-    }
-
-    /**
-     * Valida se todos os campos necessários estão preenchidos corretamente e, se estiver, retorna um array com os valores dos campos.
-     *
-     * @param campos ArrayList de campos de texto a serem verificados.
-     * @return ArrayList com os valores dos campos.
-     * @throws NumberFormatException    Se um dos campos não for um número válido.
-     * @throws IllegalArgumentException Se um dos campos estiver vazio.
-     */
-    private ArrayList<Double> validaCampos(ArrayList<JTextField> campos) {
-        ArrayList<Double> valores = new ArrayList<>();
-        for (JTextField campo : campos) {
-            if (!campo.isVisible()) continue;
-            if (campo.getText().isEmpty()) {
-                throw new IllegalArgumentException("Preencha todos os campos");
-            }
-            try {
-                valores.add(Double.parseDouble(campo.getText()));
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException("Valor '" + campo.getText() + "' inválido");
-            }
-        }
-        return valores;
     }
 
     {
@@ -305,4 +259,5 @@ public class VincularCliente implements Tela {
     public JComponent $$$getRootComponent$$$() {
         return frame;
     }
+
 }

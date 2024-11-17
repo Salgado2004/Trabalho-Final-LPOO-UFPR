@@ -10,7 +10,6 @@ import java.beans.PropertyChangeSupport;
  * Implementa a interface ContaI.
  */
 public abstract class Conta implements ContaI {
-    private static int contador = 0;
     protected int numero;
     protected Cliente dono;
     protected double saldo;
@@ -42,7 +41,7 @@ public abstract class Conta implements ContaI {
      * @param saldo O saldo inicial da conta.
      */
     public Conta(Cliente dono, double saldo) {
-        this(++contador, dono, saldo);
+        this(-1, dono, saldo);
     }
 
     /**
@@ -92,6 +91,10 @@ public abstract class Conta implements ContaI {
 
     public int getNumero() {
         return this.numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     public double getSaldo() {
