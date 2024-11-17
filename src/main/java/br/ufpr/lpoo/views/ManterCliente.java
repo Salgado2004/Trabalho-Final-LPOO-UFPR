@@ -1,5 +1,6 @@
 package br.ufpr.lpoo.views;
 
+import br.ufpr.lpoo.Sistema;
 import br.ufpr.lpoo.controllers.*;
 import br.ufpr.lpoo.models.Cliente;
 import br.ufpr.lpoo.models.Endereco;
@@ -14,10 +15,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * Esta classe representa a tela de manutenção do cliente.
@@ -26,6 +27,7 @@ import java.util.Locale;
 public class ManterCliente implements Tela {
     private JPanel frame;
     private JButton voltarButton;
+    private final ManterClienteController controller;
     private JTextField textFieldNome;
     private JTextField textFieldSobrenome;
     private JTextField textFieldLogradouro;
@@ -44,8 +46,6 @@ public class ManterCliente implements Tela {
     private JTextField pesquisa;
     private JButton clearButton;
     private Comparator comparator;
-    private Cliente cliente;
-    private ManterClienteTableModel tabelaModel = new ManterClienteTableModel(Sistema.getClientes());
 
 
     /**
@@ -53,196 +53,7 @@ public class ManterCliente implements Tela {
      * Define os valores iniciais para as variáveis de instância e adiciona os ouvintes de ação aos botões.
      */
     public ManterCliente() {
-        this.initUIComponents();
-        tabelaClientes.setModel(tabelaModel);
-        tabelaClientes.setColumnModel(tabelaClientes.getColumnModel());
-
-        comparator = new NomeComparator();
-        tabelaModel.sortClientes(comparator);
-
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Sistema.goBack();
-            }
-        });
-        inserirButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nome = textFieldNome.getText();
-                String sobreNome = textFieldSobrenome.getText();
-                String logradouro = textFieldLogradouro.getText();
-                String bairro = textFieldBairro.getText();
-                String cidade = textFieldCidade.getText();
-                String numero = textFieldNumero.getText();
-                String cpf = textFieldCPF.getText();
-                String rg = textFieldRG.getText();
-
-                areTextFieldsFilled(textFieldNome, "nome");
-                areTextFieldsFilled(textFieldSobrenome, "sobrenome");
-                areTextFieldsFilled(textFieldLogradouro, "logradouro");
-                areTextFieldsFilled(textFieldBairro, "bairro");
-                areTextFieldsFilled(textFieldCidade, "cidade");
-                areTextFieldsFilled(textFieldNumero, "numero");
-                areTextFieldsFilled(textFieldCPF, "CPF");
-                areTextFieldsFilled(textFieldRG, "RG");
-
-                cpf = cpf.replaceAll("[^0-9]", "");
-
-                if (isInteger(numero)) {
-                    MensagensController.erro(null, "Número Inválido\n");
-                    return;
-                }
-
-                if (cpf.equals("")) {
-                    MensagensController.erro(null, "Campo CPF não pode estar vazio\n");
-                    return;
-                }
-                if (isCpfExistente(cpf)) {
-                    MensagensController.erro(null, "CPF já cadastrado\n");
-                    return;
-                }
-
-                if (!validaCpf(cpf)) {
-                    MensagensController.erro(null, "CPF inválido\n");
-                    return;
-                }
-
-                Endereco endereco = new Endereco(logradouro, bairro, numero, cidade);
-                Cliente c = new Cliente(nome, sobreNome, endereco, cpf, rg);
-
-                try {
-                    Sistema.cadastrarCliente(c);
-                    MensagensController.sucesso(frame, "Cliente cadastrado com sucesso");
-                    tabelaModel.updateList(Sistema.getClientes());
-                    clearForm();
-                } catch (Exception ex) {
-                    MensagensController.erro(frame, ex.getMessage());
-                }
-
-            }
-        });
-
-        buscarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String query = pesquisa.getText();
-
-                query = query.replaceAll("/[^a-zA-Z0-9]/g", "");
-
-                if (query.isEmpty()) {
-                    MensagensController.aviso(frame, "Insira um CPF ou um segmento de nome para buscar\n");
-                    tabelaModel.updateList(Sistema.getClientes());
-                    return;
-                }
-
-                List<Cliente> lista = Sistema.getClientes(query);
-                if (lista == null) {
-                    MensagensController.erro(frame, "Nenhum resultado encontrado");
-                } else {
-                    tabelaModel.updateList(lista);
-                }
-            }
-        });
-
-        editarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String nome = textFieldNome.getText();
-                String sobreNome = textFieldSobrenome.getText();
-                String logradouro = textFieldLogradouro.getText();
-                String bairro = textFieldBairro.getText();
-                String cidade = textFieldCidade.getText();
-                String numero = textFieldNumero.getText();
-                String cpf = textFieldCPF.getText();
-                String rg = textFieldRG.getText();
-
-
-                areTextFieldsFilled(textFieldNome, "nome");
-                areTextFieldsFilled(textFieldSobrenome, "sobrenome");
-                areTextFieldsFilled(textFieldLogradouro, "logradouro");
-                areTextFieldsFilled(textFieldBairro, "bairro");
-                areTextFieldsFilled(textFieldCidade, "cidade");
-                areTextFieldsFilled(textFieldNumero, "numero");
-                areTextFieldsFilled(textFieldCPF, "CPF");
-                areTextFieldsFilled(textFieldRG, "RG");
-
-                if (isInteger(numero)) {
-                    MensagensController.erro(null, "Número Inválido\n");
-                    return;
-                }
-
-                if (cpf.equals("")) {
-                    MensagensController.aviso(null, "CPF não pode ser vazio\n");
-                    return;
-                }
-
-                if (!validaCpf(cpf)) {
-                    MensagensController.erro(null, "CPF Inválido\n");
-                    return;
-                }
-
-                cliente.setNome(nome);
-                cliente.setSobrenome(sobreNome);
-                cliente.setRg(rg);
-
-                try {
-                    Sistema.updateCliente(cliente);
-                    MensagensController.sucesso(frame, "Informações editadas\n");
-                    clearForm();
-                    tabelaModel.fireTableDataChanged();
-                } catch (Exception ex) {
-                    MensagensController.erro(frame, "Não foi possível editar: " + ex.getMessage());
-                }
-            }
-        });
-
-        excluirButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cpf = textFieldCPF.getText();
-
-                if (MensagensController.confirmar(frame, "Certeza que deseja excluir o cliente?")) {
-                    try {
-                        Sistema.deleteCliente(cliente);
-                        MensagensController.sucesso(frame, "CPF " + cpf + " removido\n");
-                        tabelaModel.updateList(Sistema.getClientes());
-                        clearForm();
-                    } catch (Exception ex) {
-                        MensagensController.erro(frame, "Ocorreu um erro ao remover o cliente: " + ex.getMessage());
-                    }
-                }
-            }
-        });
-
-        clearButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clearForm();
-            }
-        });
-
-        comboOrdem.addComponentListener(new ComponentAdapter() {
-        });
-        comboOrdem.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (comboOrdem.getSelectedIndex() == 1) {
-                    comparator = new SobrenomeComparator();
-                } else {
-                    comparator = new NomeComparator();
-                }
-                tabelaModel.sortClientes(comparator);
-            }
-        });
-
-        tabelaClientes.getSelectionModel().addListSelectionListener(e -> {
-            if (tabelaClientes.getSelectedRow() != -1) {
-                this.loadCliente(tabelaModel.getClientAt(tabelaClientes.getSelectedRow()));
-            }
-        });
+        this.controller = new ManterClienteController(this);
     }
 
     @Override
@@ -256,23 +67,76 @@ public class ManterCliente implements Tela {
         this.tabelaClientes.getTableHeader().setBackground(new Color(225, 248, 255));
     }
 
-    /**
-     * Verifica se um CPF já existe na lista de clientes.
-     *
-     * @param cpf O CPF a ser verificado.
-     * @return Verdadeiro se o CPF já existe, falso caso contrário.
-     */
-    private boolean isCpfExistente(String cpf) {
-        for (Cliente cliente : Sistema.getClientes()) {
-            if (cliente.getCpf().equalsIgnoreCase(cpf)) {
-                return true;
+    public void setController(ManterClienteTableModel tabelaModel) {
+        tabelaClientes.setModel(tabelaModel);
+        comparator = new NomeComparator();
+        tabelaModel.sortClientes(comparator);
+
+        voltarButton.addActionListener(e -> Sistema.goBack());
+
+        clearButton.addActionListener(e -> clearForm());
+
+        inserirButton.addActionListener(e -> {
+            try {
+                Cliente c = loadForm();
+                controller.cadastrarCliente(c);
+                MensagensController.sucesso(frame, "Cliente cadastrado com sucesso");
+                clearForm();
+            } catch (SQLIntegrityConstraintViolationException ex) {
+                System.out.println(ex.getMessage());
+                if (ex.getMessage().contains("Duplicate entry")) {
+                    MensagensController.erro(frame, "CPF já cadastrado");
+                }
+            } catch (Exception ex) {
+                MensagensController.erro(frame, ex.getMessage());
             }
-        }
-        return false;
+        });
+
+        editarButton.addActionListener(e -> {
+            try {
+                Cliente cliente = loadForm();
+                controller.updateCliente(cliente);
+                MensagensController.sucesso(frame, "Informações editadas\n");
+                clearForm();
+            } catch (Exception ex) {
+                MensagensController.erro(frame, "Não foi possível editar: " + ex.getMessage());
+            }
+        });
+
+        excluirButton.addActionListener(e -> {
+            String cpf = textFieldCPF.getText();
+            if (MensagensController.confirmar(frame, "Certeza que deseja excluir o cliente?")) {
+                try {
+                    controller.deleteCliente(cpf);
+                    MensagensController.sucesso(frame, "CPF '" + cpf + "' removido\n");
+                } catch (RuntimeException ex) {
+                    MensagensController.erro(frame, "Ocorreu um erro ao remover o cliente: " + ex.getMessage());
+                }
+            }
+        });
+
+        buscarButton.addActionListener(e -> {
+            try {
+                String query = pesquisa.getText();
+                controller.buscarClientes(query);
+            } catch (RuntimeException ex) {
+                MensagensController.aviso(frame, ex.getMessage());
+            }
+        });
+
+        comboOrdem.addItemListener(e -> {
+            if (comboOrdem.getSelectedIndex() == 1) {
+                comparator = new SobrenomeComparator();
+            } else {
+                comparator = new NomeComparator();
+            }
+            tabelaModel.sortClientes(comparator);
+        });
+
+        tabelaClientes.getSelectionModel().addListSelectionListener(e -> controller.selectCliente(tabelaClientes.getSelectedRow()));
     }
 
     public void loadCliente(Cliente cliente) {
-        this.cliente = cliente;
         textFieldNome.setText(cliente.getNome());
         textFieldCPF.setText(cliente.getCpf());
         textFieldSobrenome.setText(cliente.getSobrenome());
@@ -281,6 +145,28 @@ public class ManterCliente implements Tela {
         textFieldCidade.setText(cliente.getEndereco().getCidade());
         textFieldNumero.setText(Integer.toString(cliente.getEndereco().getNumero()));
         textFieldRG.setText(cliente.getRg());
+    }
+
+    public Cliente loadForm() {
+        String nome = textFieldNome.getText();
+        String sobreNome = textFieldSobrenome.getText();
+        String logradouro = textFieldLogradouro.getText();
+        String bairro = textFieldBairro.getText();
+        String cidade = textFieldCidade.getText();
+        String numero = textFieldNumero.getText();
+        String cpf = textFieldCPF.getText();
+        cpf = cpf.replaceAll("[^0-9]", "");
+        String rg = textFieldRG.getText();
+
+        this.areTextFieldsFilled(textFieldNome, "nome");
+        this.areTextFieldsFilled(textFieldSobrenome, "sobrenome");
+        this.areTextFieldsFilled(textFieldLogradouro, "logradouro");
+        this.areTextFieldsFilled(textFieldBairro, "bairro");
+        this.areTextFieldsFilled(textFieldCidade, "cidade");
+        this.areTextFieldsFilled(textFieldRG, "RG");
+
+        Endereco endereco = new Endereco(logradouro, bairro, numero, cidade);
+        return new Cliente(nome, sobreNome, endereco, cpf, rg);
     }
 
     public void clearForm() {
@@ -295,76 +181,15 @@ public class ManterCliente implements Tela {
     }
 
     /**
-     * Verifica se uma string pode ser convertida para um número inteiro.
-     *
-     * @param str A string a ser verificada.
-     * @return Verdadeiro se a string pode ser convertida para um número inteiro, falso caso contrário.
-     */
-    public static boolean isInteger(String str) {
-        if (str == null) {
-            return true;
-        }
-        try {
-            Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Verifica se um campo de texto está preenchido.
      *
      * @param textField O campo de texto a ser verificado.
      * @param campo     O nome do campo a ser verificado.
-     * @return Verdadeiro se o campo de texto está preenchido, falso caso contrário.
      */
-    public static boolean areTextFieldsFilled(JTextField textField, String campo) {
+    public void areTextFieldsFilled(JTextField textField, String campo) {
         if (textField.getText().trim().isEmpty()) {
-            MensagensController.aviso(null, "Campo " + campo + " está vazio\n");
-            return false;
+            throw new IllegalArgumentException("Campo " + campo + " não pode estar vazio\n");
         }
-        return true;
-    }
-
-    /**
-     * Valida um CPF.
-     *
-     * @param cpf O CPF a ser validado.
-     * @return Verdadeiro se o CPF é válido, falso caso contrário.
-     */
-    public static boolean validaCpf(String cpf) {
-        int soma = 0, resto = 0;
-
-        cpf = cpf.replaceAll("[^0-9]", "");
-
-        if (cpf.matches("[0-9]{11}") && !cpf.matches("^(\\d)\\1{10}")) {
-            for (int i = 0; i < 9; i++) {
-                soma += Integer.parseInt(cpf.substring(i, i + 1)) * (10 - i);
-            }
-            resto = 11 - (soma % 11);
-            if (resto == 10 || resto == 11) {
-                resto = 0;
-            }
-            if (resto != Integer.parseInt(cpf.substring(9, 10))) {
-                return false;
-            }
-
-            soma = 0;
-            for (int i = 0; i < 10; i++) {
-                soma += Integer.parseInt(cpf.substring(i, i + 1)) * (11 - i);
-            }
-            resto = 11 - (soma % 11);
-            if (resto == 10 || resto == 11) {
-                resto = 0;
-            }
-            if (resto != Integer.parseInt(cpf.substring(10, 11))) {
-                return false;
-            }
-
-            return true;
-        }
-        return false;
     }
 
     /**
