@@ -26,6 +26,15 @@ public class ContaCorrente extends Conta {
         this.limite = limite;
     }
 
+    public ContaCorrente(Cliente dono, double saldo, double limite, double depositoInicial) {
+        super(dono, saldo);
+        if (limite < 0) {
+            throw new IllegalArgumentException("Limite deve ser maior ou igual a 0.");
+        }
+        this.depositoInicial = depositoInicial;
+        this.limite = limite;
+    }
+
     public double getLimite() {
         return this.limite;
     }
