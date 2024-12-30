@@ -18,10 +18,8 @@ Trabalho prático final de Linguagem de Programação Orientada a Objetos do cur
 - [Documentação](#documentação)
 
 ## Alunos
-- Alisson Gabriel Santos [@AlissonGSantos](https://github.com/AlissonGSantos)
-- Leonardo Felipe Salgado [@Salgado2004](https://github.com/Salgado2004)
-- Pedro Henrique de Souza [@Pedro-H108](https://github.com/Pedro-H108)
-- Raul Ferreira Costa Bana [@raulbana](https://github.com/raulbana)
+<!-- contributors -->
+<!-- /contributors -->
 
 ## Sistema
 Desenvolvimento do sistema bancário do **`Banco TADS-UFPR`**

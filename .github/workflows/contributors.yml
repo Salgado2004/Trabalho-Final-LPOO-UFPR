@@ -1,0 +1,16 @@
+name: Update contributors graph
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-my-action:
+    runs-on: windows-latest
+    name: Update contributors graph
+    permissions:
+      contents: write
+    steps:
+      - uses: salgado2004/contributors-chart-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          include-bots: false
