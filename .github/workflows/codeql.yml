@@ -5,6 +5,10 @@ on:
     branches: [ "main", "development" ]
     paths-ignore:
       - 'src/test/**'
+      - '**.md'
+      - 'docs/**'
+      - 'contributors/**'
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
