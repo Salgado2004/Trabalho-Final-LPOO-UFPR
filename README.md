@@ -19,6 +19,35 @@ Trabalho prático final de Linguagem de Programação Orientada a Objetos do cur
 
 ## Alunos
 <!-- contributors -->
+<table>
+	<tr>
+       <td align="center">
+            <a href="https://github.com/Salgado2004">
+                <img src="./contributors/salgado2004.png" width="100px;" alt="Salgado2004" />
+                <p><strong>Salgado2004</strong></p>
+            </a>
+        </td>
+       <td align="center">
+            <a href="https://github.com/raulbana">
+                <img src="./contributors/raulbana.png" width="100px;" alt="raulbana" />
+                <p><strong>raulbana</strong></p>
+            </a>
+        </td>
+       <td align="center">
+            <a href="https://github.com/AlissonGSantos">
+                <img src="./contributors/alissongsantos.png" width="100px;" alt="AlissonGSantos" />
+                <p><strong>AlissonGSantos</strong></p>
+            </a>
+        </td>
+       <td align="center">
+            <a href="https://github.com/Pedro-H108">
+                <img src="./contributors/pedro_h108.png" width="100px;" alt="Pedro-H108" />
+                <p><strong>Pedro-H108</strong></p>
+            </a>
+        </td>
+	</tr>
+</table>
+<sub>Made with <a href='https://github.com/marketplace/actions/contributors-readme-chart-generator'>Contributors README Chart Generator</a></sub>
 <!-- /contributors -->
 
 ## Sistema
